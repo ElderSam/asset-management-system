@@ -1,20 +1,22 @@
-import { useState, useMemo } from 'react';
-import { Box, Typography, Button, Snackbar, Alert } from '@mui/material';
+import { useState, useMemo, useEffect } from 'react';
+import { Box, Typography, Button, Snackbar, Alert, CircularProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import type { Asset, AssetFilters, AssetFormData } from '../types/asset';
-import { mockAssets } from '../data/mockAssets';
 import AssetFiltersComponent from '../components/AssetFilters';
 import AssetTable from '../components/AssetTable';
 import AssetForm from '../components/AssetForm';
 import ConfirmDialog from '../components/ConfirmDialog';
+import * as mockService from '../services/mockService';
 import styles from './Dashboard.module.css';
 
 /**
  * Página principal - Dashboard de ativos
  */
 export default function Dashboard() {
-  // Estado dos ativos (mock)
-  const [assets, setAssets] = useState<Asset[]>(mockAssets);
+  // Estado dos ativos
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
 
   // Estado dos filtros
   const [filters, setFilters] = useState<AssetFilters>({
@@ -41,6 +43,28 @@ export default function Dashboard() {
     message: '',
     severity: 'success',
   });
+
+  // Carrega ativos ao montar o componente
+  useEffect(() => {
+    loadAssets();
+  }, []);
+
+  // Carrega todos os ativos
+  const loadAssets = async () => {
+    try {
+      setLoading(true);
+      const data = await mockService.getAssets();
+      setAssets(data);
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: 'Erro ao carregar ativos',
+        severity: 'error',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Filtra os ativos baseado nos filtros ativos
   const filteredAssets = useMemo(() => {
@@ -85,38 +109,43 @@ export default function Dashboard() {
   };
 
   // Submete formulário (criar ou editar)
-  const handleFormSubmit = (data: AssetFormData) => {
-    if (editingAsset) {
-      // Editar ativo existente
-      setAssets((prev) =>
-        prev.map((asset) =>
-          asset.id === editingAsset.id
-            ? { ...asset, ...data, updatedAt: new Date().toISOString() }
-            : asset
-        )
-      );
+  const handleFormSubmit = async (data: AssetFormData) => {
+    try {
+      setActionLoading(true);
+      
+      if (editingAsset) {
+        // Editar ativo existente
+        const updatedAsset = await mockService.updateAsset(editingAsset.id, data);
+        setAssets((prev) =>
+          prev.map((asset) => (asset.id === updatedAsset.id ? updatedAsset : asset))
+        );
+        setSnackbar({
+          open: true,
+          message: 'Ativo atualizado com sucesso!',
+          severity: 'success',
+        });
+      } else {
+        // Criar novo ativo
+        const newAsset = await mockService.createAsset(data);
+        setAssets((prev) => [newAsset, ...prev]);
+        setSnackbar({
+          open: true,
+          message: 'Ativo criado com sucesso!',
+          severity: 'success',
+        });
+      }
+      
+      setIsFormOpen(false);
+      setEditingAsset(undefined);
+    } catch (error) {
       setSnackbar({
         open: true,
-        message: 'Ativo atualizado com sucesso!',
-        severity: 'success',
+        message: 'Erro ao salvar ativo',
+        severity: 'error',
       });
-    } else {
-      // Criar novo ativo
-      const newAsset: Asset = {
-        ...data,
-        id: Math.max(...assets.map((a) => a.id)) + 1,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      setAssets((prev) => [newAsset, ...prev]);
-      setSnackbar({
-        open: true,
-        message: 'Ativo criado com sucesso!',
-        severity: 'success',
-      });
+    } finally {
+      setActionLoading(false);
     }
-    setIsFormOpen(false);
-    setEditingAsset(undefined);
   };
 
   // Abre dialog de confirmação de exclusão
@@ -126,14 +155,26 @@ export default function Dashboard() {
   };
 
   // Confirma exclusão
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (assetToDelete) {
-      setAssets((prev) => prev.filter((asset) => asset.id !== assetToDelete));
-      setSnackbar({
-        open: true,
-        message: 'Ativo excluído com sucesso!',
-        severity: 'success',
-      });
+      try {
+        setActionLoading(true);
+        await mockService.deleteAsset(assetToDelete);
+        setAssets((prev) => prev.filter((asset) => asset.id !== assetToDelete));
+        setSnackbar({
+          open: true,
+          message: 'Ativo excluído com sucesso!',
+          severity: 'success',
+        });
+      } catch (error) {
+        setSnackbar({
+          open: true,
+          message: 'Erro ao excluir ativo',
+          severity: 'error',
+        });
+      } finally {
+        setActionLoading(false);
+      }
     }
     setDeleteDialogOpen(false);
     setAssetToDelete(null);
@@ -163,6 +204,7 @@ export default function Dashboard() {
             startIcon={<AddIcon />}
             onClick={handleCreateAsset}
             size="large"
+            disabled={loading || actionLoading}
           >
             Novo Ativo
           </Button>
@@ -176,12 +218,19 @@ export default function Dashboard() {
         onClearFilters={handleClearFilters}
       />
 
-      {/* Tabela de ativos */}
-      <AssetTable
-        assets={filteredAssets}
-        onEdit={handleEditAsset}
-        onDelete={handleDeleteAsset}
-      />
+      {/* Loading */}
+      {loading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        /* Tabela de ativos */
+        <AssetTable
+          assets={filteredAssets}
+          onEdit={handleEditAsset}
+          onDelete={handleDeleteAsset}
+        />
+      )}
 
       {/* Formulário de criar/editar */}
       <AssetForm

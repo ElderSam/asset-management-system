@@ -68,8 +68,8 @@ Este arquivo serve como guia de progresso do projeto.
 
 ### Configurações (1h)
 - [x] Criar tema MUI customizado (`src/theme/theme.ts`)
-- [ ] Configurar TanStack Query Provider
-- [ ] Configurar React Router
+- [ ] Configurar TanStack Query Provider (FASE 5)
+- [ ] Configurar React Router (FASE 5)
 - [x] Limpar arquivos padrão do Vite
 
 ### Types e Mock Data (1h)
@@ -111,21 +111,21 @@ Este arquivo serve como guia de progresso do projeto.
   - [x] Integrar Form Dialog
   - [x] Lógica de filtros (search, category, status)
   - [x] Lógica de CRUD mockado (useState)
-- [ ] `NotFound.tsx` - Página 404
+- [x] `NotFound.tsx` - Página 404
 
 ### Hooks/Services (1h)
-- [ ] `src/services/mockService.ts` - Simular API
-  - [ ] `getAssets()`
-  - [ ] `getAssetById(id)`
-  - [ ] `createAsset(data)`
-  - [ ] `updateAsset(id, data)`
-  - [ ] `deleteAsset(id)`
-  - [ ] Delays simulados (setTimeout)
+- [x] `src/services/mockService.ts` - Simular API
+  - [x] `getAssets()`
+  - [x] `getAssetById(id)`
+  - [x] `createAsset(data)`
+  - [x] `updateAsset(id, data)`
+  - [x] `deleteAsset(id)`
+  - [x] Delays simulados (setTimeout)
 
 ### Responsividade e Polimento (1h)
 - [x] Testar em diferentes tamanhos de tela
 - [x] Ajustar Grid/Container do MUI
-- [ ] Loading states (Skeleton do MUI)
+- [x] Loading states (Skeleton do MUI)
 - [x] Toast notifications (Snackbar do MUI)
 - [x] Confirmação de exclusão (Dialog)
 
