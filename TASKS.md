@@ -56,13 +56,13 @@ Este arquivo serve como guia de progresso do projeto.
 
 ### Setup Inicial (1-2h)
 - [x] Criar projeto React com Vite + TypeScript
-- [ ] Configurar estrutura de pastas:
-  - [ ] `src/components/`
-  - [ ] `src/pages/`
-  - [ ] `src/services/`
-  - [ ] `src/types/`
-  - [ ] `src/data/`
-  - [ ] `src/theme/`
+- [x] Configurar estrutura de pastas:
+  - [x] `src/components/`
+  - [x] `src/pages/`
+  - [x] `src/services/`
+  - [x] `src/types/`
+  - [x] `src/data/`
+  - [x] `src/theme/`
 
 > **Nota:** As dependências serão instaladas sob demanda conforme necessário em cada etapa.
 
