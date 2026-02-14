@@ -67,10 +67,10 @@ Este arquivo serve como guia de progresso do projeto.
 > **Nota:** As dependências serão instaladas sob demanda conforme necessário em cada etapa.
 
 ### Configurações (1h)
-- [ ] Criar tema MUI customizado (`src/theme/theme.ts`)
+- [x] Criar tema MUI customizado (`src/theme/theme.ts`)
 - [ ] Configurar TanStack Query Provider
 - [ ] Configurar React Router
-- [ ] Limpar arquivos padrão do Vite
+- [x] Limpar arquivos padrão do Vite
 
 ### Types e Mock Data (1h)
 - [x] Criar tipos TypeScript (`src/types/asset.ts`):
