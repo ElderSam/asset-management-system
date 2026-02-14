@@ -73,15 +73,15 @@ Este arquivo serve como guia de progresso do projeto.
 - [ ] Limpar arquivos padrão do Vite
 
 ### Types e Mock Data (1h)
-- [ ] Criar tipos TypeScript (`src/types/asset.ts`):
-  - [ ] `Asset` interface
-  - [ ] `AssetFormData` type
-  - [ ] `AssetFilters` interface
-  - [ ] `AssetStatus` enum
-  - [ ] `AssetCategory` enum
-- [ ] Criar dados mockados (`src/data/mockAssets.ts`)
-  - [ ] Pelo menos 8-10 ativos de exemplo
-  - [ ] Variação de categorias e status
+- [x] Criar tipos TypeScript (`src/types/asset.ts`):
+  - [x] `Asset` interface
+  - [x] `AssetFormData` type
+  - [x] `AssetFilters` interface
+  - [x] `AssetStatus` enum
+  - [x] `AssetCategory` enum
+- [x] Criar dados mockados (`src/data/mockAssets.ts`)
+  - [x] Pelo menos 8-10 ativos de exemplo
+  - [x] Variação de categorias e status
 
 ### Componentes (4-5h)
 - [ ] `Layout.tsx` - AppBar + Container
