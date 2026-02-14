@@ -1,0 +1,32 @@
+.emptyState {
+  text-align: center;
+  padding: 64px 0;
+}
+
+.emptyTitle {
+  margin-bottom: 8px;
+  color: #757575;
+}
+
+.emptyText {
+  color: #757575;
+}
+
+.assetName {
+  font-weight: 500;
+}
+
+.serialNumber {
+  color: #757575;
+}
+
+.location {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actionCell {
+  text-align: center;
+}

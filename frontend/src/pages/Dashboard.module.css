@@ -1,0 +1,22 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.headerInfo {
+  /* Container para título e subtítulo */
+}
+
+.title {
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #757575;
+}
+
+.headerActions {
+  /* Container para botões de ação */
+}

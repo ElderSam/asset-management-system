@@ -84,17 +84,17 @@ Este arquivo serve como guia de progresso do projeto.
   - [x] Variação de categorias e status
 
 ### Componentes (4-5h)
-- [ ] `Layout.tsx` - AppBar + Container
-- [ ] `AssetTable.tsx` - Tabela com MUI Table
-  - [ ] Colunas: Nome, Nº Série, Categoria, Status, Valor, Data, Ações
-  - [ ] Botões de ação (Editar, Excluir)
-  - [ ] Formatação de valores (moeda, data)
-  - [ ] Badge colorido para status
-- [ ] `AssetFilters.tsx` - Barra de filtros
-  - [ ] Campo de busca (nome, nº série)
-  - [ ] Select de categoria
-  - [ ] Select de status
-  - [ ] Botão "Limpar filtros"
+- [x] `Layout.tsx` - AppBar + Container
+- [x] `AssetTable.tsx` - Tabela com MUI Table
+  - [x] Colunas: Nome, Nº Série, Categoria, Status, Valor, Data, Ações
+  - [x] Botões de ação (Editar, Excluir)
+  - [x] Formatação de valores (moeda, data)
+  - [x] Badge colorido para status
+- [x] `AssetFilters.tsx` - Barra de filtros
+  - [x] Campo de busca (nome, nº série)
+  - [x] Select de categoria
+  - [x] Select de status
+  - [x] Botão "Limpar filtros"
 - [ ] `AssetForm.tsx` - Dialog com formulário
   - [ ] React Hook Form + Zod validation
   - [ ] Campos: nome, nº série, categoria, status, data, valor, localização, descrição
@@ -103,13 +103,13 @@ Este arquivo serve como guia de progresso do projeto.
 - [ ] `AssetDetails.tsx` - Dialog de visualização (opcional)
 
 ### Páginas (1h)
-- [ ] `Dashboard.tsx` - Página principal
-  - [ ] Integrar Layout
-  - [ ] Integrar Filters
-  - [ ] Integrar Table
+- [x] `Dashboard.tsx` - Página principal
+  - [x] Integrar Layout
+  - [x] Integrar Filters
+  - [x] Integrar Table
   - [ ] Integrar Form Dialog
-  - [ ] Lógica de filtros (search, category, status)
-  - [ ] Lógica de CRUD mockado (useState)
+  - [x] Lógica de filtros (search, category, status)
+  - [x] Lógica de CRUD mockado (useState)
 - [ ] `NotFound.tsx` - Página 404
 
 ### Hooks/Services (1h)

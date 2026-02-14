@@ -1,0 +1,35 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  /* AppBar já tem seus estilos do MUI */
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin-right: 16px;
+}
+
+.title {
+  flex-grow: 1;
+}
+
+.container {
+  margin-top: 32px;
+  margin-bottom: 32px;
+  flex: 1;
+}
+
+.footer {
+  padding: 16px;
+  margin-top: auto;
+  background-color: #eeeeee;
+  text-align: center;
+}
