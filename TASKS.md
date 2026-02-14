@@ -95,19 +95,20 @@ Este arquivo serve como guia de progresso do projeto.
   - [x] Select de categoria
   - [x] Select de status
   - [x] Botão "Limpar filtros"
-- [ ] `AssetForm.tsx` - Dialog com formulário
-  - [ ] React Hook Form + Zod validation
-  - [ ] Campos: nome, nº série, categoria, status, data, valor, localização, descrição
-  - [ ] Validações visuais (error messages)
-  - [ ] Modo criação/edição
-- [ ] `AssetDetails.tsx` - Dialog de visualização (opcional)
+- [x] `AssetForm.tsx` - Dialog com formulário
+  - [x] React Hook Form + Zod validation
+  - [x] Campos: nome, nº série, categoria, status, data, valor, localização, descrição
+  - [x] Validações visuais (error messages)
+  - [x] Modo criação/edição
+- [x] `AssetDetails.tsx` - Dialog de visualização (opcional)
+- [x] `ConfirmDialog.tsx` - Dialog de confirmação de exclusão
 
 ### Páginas (1h)
 - [x] `Dashboard.tsx` - Página principal
   - [x] Integrar Layout
   - [x] Integrar Filters
   - [x] Integrar Table
-  - [ ] Integrar Form Dialog
+  - [x] Integrar Form Dialog
   - [x] Lógica de filtros (search, category, status)
   - [x] Lógica de CRUD mockado (useState)
 - [ ] `NotFound.tsx` - Página 404
@@ -122,11 +123,11 @@ Este arquivo serve como guia de progresso do projeto.
   - [ ] Delays simulados (setTimeout)
 
 ### Responsividade e Polimento (1h)
-- [ ] Testar em diferentes tamanhos de tela
-- [ ] Ajustar Grid/Container do MUI
+- [x] Testar em diferentes tamanhos de tela
+- [x] Ajustar Grid/Container do MUI
 - [ ] Loading states (Skeleton do MUI)
-- [ ] Toast notifications (Snackbar do MUI)
-- [ ] Confirmação de exclusão (Dialog)
+- [x] Toast notifications (Snackbar do MUI)
+- [x] Confirmação de exclusão (Dialog)
 
 ### Dockerfile Frontend
 - [ ] Criar `frontend/Dockerfile`

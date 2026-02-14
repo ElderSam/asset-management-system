@@ -1,10 +1,12 @@
 import { useState, useMemo } from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Snackbar, Alert } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import type { Asset, AssetFilters } from '../types/asset';
+import type { Asset, AssetFilters, AssetFormData } from '../types/asset';
 import { mockAssets } from '../data/mockAssets';
 import AssetFiltersComponent from '../components/AssetFilters';
 import AssetTable from '../components/AssetTable';
+import AssetForm from '../components/AssetForm';
+import ConfirmDialog from '../components/ConfirmDialog';
 import styles from './Dashboard.module.css';
 
 /**
@@ -19,6 +21,25 @@ export default function Dashboard() {
     search: '',
     category: 'ALL',
     status: 'ALL',
+  });
+
+  // Estado do formulário
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingAsset, setEditingAsset] = useState<Asset | undefined>(undefined);
+
+  // Estado do dialog de confirmação
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [assetToDelete, setAssetToDelete] = useState<number | null>(null);
+
+  // Estado de feedback (snackbar)
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
+  }>({
+    open: false,
+    message: '',
+    severity: 'success',
   });
 
   // Filtra os ativos baseado nos filtros ativos
@@ -53,20 +74,75 @@ export default function Dashboard() {
 
   // Abre dialog de criar novo ativo
   const handleCreateAsset = () => {
-    // TODO: Implementar dialog de criação
-    console.log('Create asset');
+    setEditingAsset(undefined);
+    setIsFormOpen(true);
   };
 
   // Abre dialog de edição
   const handleEditAsset = (asset: Asset) => {
-    // TODO: Implementar dialog de edição
-    console.log('Edit asset:', asset);
+    setEditingAsset(asset);
+    setIsFormOpen(true);
   };
 
-  // Deleta um ativo
+  // Submete formulário (criar ou editar)
+  const handleFormSubmit = (data: AssetFormData) => {
+    if (editingAsset) {
+      // Editar ativo existente
+      setAssets((prev) =>
+        prev.map((asset) =>
+          asset.id === editingAsset.id
+            ? { ...asset, ...data, updatedAt: new Date().toISOString() }
+            : asset
+        )
+      );
+      setSnackbar({
+        open: true,
+        message: 'Ativo atualizado com sucesso!',
+        severity: 'success',
+      });
+    } else {
+      // Criar novo ativo
+      const newAsset: Asset = {
+        ...data,
+        id: Math.max(...assets.map((a) => a.id)) + 1,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      setAssets((prev) => [newAsset, ...prev]);
+      setSnackbar({
+        open: true,
+        message: 'Ativo criado com sucesso!',
+        severity: 'success',
+      });
+    }
+    setIsFormOpen(false);
+    setEditingAsset(undefined);
+  };
+
+  // Abre dialog de confirmação de exclusão
   const handleDeleteAsset = (id: number) => {
-    // TODO: Implementar confirmação de exclusão
-    setAssets((prev) => prev.filter((asset) => asset.id !== id));
+    setAssetToDelete(id);
+    setDeleteDialogOpen(true);
+  };
+
+  // Confirma exclusão
+  const handleConfirmDelete = () => {
+    if (assetToDelete) {
+      setAssets((prev) => prev.filter((asset) => asset.id !== assetToDelete));
+      setSnackbar({
+        open: true,
+        message: 'Ativo excluído com sucesso!',
+        severity: 'success',
+      });
+    }
+    setDeleteDialogOpen(false);
+    setAssetToDelete(null);
+  };
+
+  // Cancela exclusão
+  const handleCancelDelete = () => {
+    setDeleteDialogOpen(false);
+    setAssetToDelete(null);
   };
 
   return (
@@ -106,6 +182,40 @@ export default function Dashboard() {
         onEdit={handleEditAsset}
         onDelete={handleDeleteAsset}
       />
+
+      {/* Formulário de criar/editar */}
+      <AssetForm
+        open={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        onSubmit={handleFormSubmit}
+        asset={editingAsset}
+      />
+
+      {/* Dialog de confirmação de exclusão */}
+      <ConfirmDialog
+        open={deleteDialogOpen}
+        title="Confirmar Exclusão"
+        message="Tem certeza que deseja excluir este ativo? Esta ação não pode ser desfeita."
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
+
+      {/* Snackbar de feedback */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
