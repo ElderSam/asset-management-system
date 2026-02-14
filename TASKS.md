@@ -55,15 +55,7 @@ Este arquivo serve como guia de progresso do projeto.
 **Tempo estimado:** 8-10h (1-1.5 dias)
 
 ### Setup Inicial (1-2h)
-- [ ] Criar projeto React com Vite + TypeScript
-- [ ] Instalar dependências:
-  - [ ] Material UI (@mui/material, @emotion/react, @emotion/styled)
-  - [ ] MUI Icons (@mui/icons-material)
-  - [ ] TanStack Query (@tanstack/react-query)
-  - [ ] React Hook Form + Zod
-  - [ ] Axios
-  - [ ] React Router DOM
-  - [ ] date-fns
+- [x] Criar projeto React com Vite + TypeScript
 - [ ] Configurar estrutura de pastas:
   - [ ] `src/components/`
   - [ ] `src/pages/`
@@ -71,6 +63,8 @@ Este arquivo serve como guia de progresso do projeto.
   - [ ] `src/types/`
   - [ ] `src/data/`
   - [ ] `src/theme/`
+
+> **Nota:** As dependências serão instaladas sob demanda conforme necessário em cada etapa.
 
 ### Configurações (1h)
 - [ ] Criar tema MUI customizado (`src/theme/theme.ts`)
