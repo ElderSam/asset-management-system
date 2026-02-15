@@ -94,7 +94,7 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
     defaultValues: {
       name: '',
       serialNumber: '',
-      category: AssetCategory.COMPUTER,
+      category: '' as any,
       status: AssetStatus.ACTIVE,
       purchaseDate: new Date().toISOString().split('T')[0],
       purchaseValue: 0,
@@ -123,7 +123,7 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
         reset({
           name: '',
           serialNumber: '',
-          category: AssetCategory.COMPUTER,
+          category: '' as any,
           status: AssetStatus.ACTIVE,
           purchaseDate: new Date().toISOString().split('T')[0],
           purchaseValue: 0,
@@ -195,6 +195,9 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
                     error={!!errors.category}
                     helperText={errors.category?.message}
                   >
+                    <MenuItem value="" disabled>
+                      Selecione uma categoria
+                    </MenuItem>
                     <MenuItem value={AssetCategory.COMPUTER}>Computador</MenuItem>
                     <MenuItem value={AssetCategory.MONITOR}>Monitor</MenuItem>
                     <MenuItem value={AssetCategory.PERIPHERAL}>Periférico</MenuItem>
