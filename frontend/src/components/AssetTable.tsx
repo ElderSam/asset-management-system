@@ -126,9 +126,9 @@ export default function AssetTable({ assets, onEdit, onDelete }: AssetTableProps
             <TableCell>Nº Série</TableCell>
             <TableCell>Categoria</TableCell>
             <TableCell>Status</TableCell>
+            <TableCell>Localização</TableCell>
             <TableCell align="right">Valor</TableCell>
             <TableCell>Data Compra</TableCell>
-            <TableCell>Localização</TableCell>
             <TableCell align="center">Ações</TableCell>
           </TableRow>
         </TableHead>
@@ -149,7 +149,11 @@ export default function AssetTable({ assets, onEdit, onDelete }: AssetTableProps
                   {asset.serialNumber}
                 </Typography>
               </TableCell>
-              <TableCell>{getCategoryLabel(asset.category)}</TableCell>
+              <TableCell>
+                <Typography variant="body2" fontWeight={500}>
+                  {getCategoryLabel(asset.category)}
+                </Typography>
+              </TableCell>
               <TableCell>
                 <Chip
                   label={getStatusLabel(asset.status)}
@@ -157,17 +161,17 @@ export default function AssetTable({ assets, onEdit, onDelete }: AssetTableProps
                   size="small"
                 />
               </TableCell>
-              <TableCell align="right">
-                <Typography variant="body2" fontWeight={500}>
-                  {asset.purchaseValue ? formatCurrency(asset.purchaseValue) : '-'}
-                </Typography>
-              </TableCell>
-              <TableCell>{formatDate(asset.purchaseDate)}</TableCell>
               <TableCell>
                 <Typography variant="body2" className={styles.location}>
                   {asset.location || '-'}
                 </Typography>
               </TableCell>
+              <TableCell align="right">
+                <Typography variant="body2">
+                  {asset.purchaseValue ? formatCurrency(asset.purchaseValue) : '-'}
+                </Typography>
+              </TableCell>
+              <TableCell>{formatDate(asset.purchaseDate)}</TableCell>
               <TableCell className={styles.actionCell}>
                 <IconButton
                   size="small"
