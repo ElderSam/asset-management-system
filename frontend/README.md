@@ -39,6 +39,8 @@ pnpm install && pnpm dev
 - **React Hook Form** - Gerenciamento de formulários
 - **Zod** - Validação de schemas
 
+> 📖 **[Decisões Técnicas Detalhadas](./TECHNICAL_DECISIONS.md)** - Entenda o raciocínio por trás de cada escolha técnica
+
 ---
 
 ## 🚀 Quick Start
