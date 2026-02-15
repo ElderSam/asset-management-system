@@ -34,10 +34,22 @@ const assetSchema = z.object({
     .string()
     .min(3, 'Número de série deve ter no mínimo 3 caracteres')
     .max(50, 'Número de série deve ter no máximo 50 caracteres'),
-  category: z.nativeEnum(AssetCategory, {
+  category: z.union([
+    z.literal(AssetCategory.COMPUTER),
+    z.literal(AssetCategory.MONITOR),
+    z.literal(AssetCategory.PERIPHERAL),
+    z.literal(AssetCategory.NETWORK),
+    z.literal(AssetCategory.FURNITURE),
+    z.literal(AssetCategory.OTHER),
+  ], {
     message: 'Categoria inválida',
   }),
-  status: z.nativeEnum(AssetStatus, {
+  status: z.union([
+    z.literal(AssetStatus.ACTIVE),
+    z.literal(AssetStatus.INACTIVE),
+    z.literal(AssetStatus.MAINTENANCE),
+    z.literal(AssetStatus.DISPOSED),
+  ], {
     message: 'Status inválido',
   }),
   purchaseDate: z
@@ -206,10 +218,10 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
                     error={!!errors.status}
                     helperText={errors.status?.message}
                   >
-                    <MenuItem value={AssetStatus.ACTIVE}>Ativo</MenuItem>
-                    <MenuItem value={AssetStatus.INACTIVE}>Inativo</MenuItem>
-                    <MenuItem value={AssetStatus.MAINTENANCE}>Manutenção</MenuItem>
-                    <MenuItem value={AssetStatus.RETIRED}>Aposentado</MenuItem>
+                    <MenuItem value={AssetStatus.ACTIVE}>Em uso</MenuItem>
+                    <MenuItem value={AssetStatus.INACTIVE}>Armazenado</MenuItem>
+                    <MenuItem value={AssetStatus.MAINTENANCE}>Em manutenção</MenuItem>
+                    <MenuItem value={AssetStatus.DISPOSED}>Descartado</MenuItem>
                   </TextField>
                 )}
               />

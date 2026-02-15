@@ -90,10 +90,10 @@ export default function AssetFilters({
             onChange={handleStatusChange}
           >
             <MenuItem value="ALL">Todos</MenuItem>
-            <MenuItem value={AssetStatusEnum.ACTIVE}>Ativo</MenuItem>
-            <MenuItem value={AssetStatusEnum.INACTIVE}>Inativo</MenuItem>
-            <MenuItem value={AssetStatusEnum.MAINTENANCE}>Manutenção</MenuItem>
-            <MenuItem value={AssetStatusEnum.RETIRED}>Aposentado</MenuItem>
+            <MenuItem value={AssetStatusEnum.ACTIVE}>Em uso (ativo)</MenuItem>
+            <MenuItem value={AssetStatusEnum.INACTIVE}>Armazenado (inativo)</MenuItem>
+            <MenuItem value={AssetStatusEnum.MAINTENANCE}>Em manutenção</MenuItem>
+            <MenuItem value={AssetStatusEnum.DISPOSED}>Descartado</MenuItem>
           </TextField>
         </Box>
         <Box sx={{ flex: { xs: '1 1 100%', md: '0 0 auto' } }}>

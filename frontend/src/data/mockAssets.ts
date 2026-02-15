@@ -1,4 +1,5 @@
-import { Asset, AssetStatus, AssetCategory } from '../types/asset';
+import type { Asset } from '../types/asset';
+import { AssetStatus, AssetCategory } from '../types/asset';
 
 /**
  * Mock data - Dados de exemplo para desenvolvimento
@@ -100,7 +101,7 @@ export const mockAssets: Asset[] = [
     name: 'Samsung 27" Curvo',
     serialNumber: 'SAM-2022-008',
     category: AssetCategory.MONITOR,
-    status: AssetStatus.RETIRED,
+    status: AssetStatus.DISPOSED,
     purchaseDate: '2022-03-10',
     purchaseValue: 900.00,
     location: 'Depósito - Subsolo',

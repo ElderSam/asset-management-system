@@ -123,7 +123,7 @@ src/
 ### Filtros Avançados
 - 🔍 Busca por nome ou número de série
 - 📂 Filtro por categoria (Computador, Monitor, Periférico, Rede, Móvel, Outro)
-- 📊 Filtro por status (Ativo, Inativo, Manutenção, Aposentado)
+- 📊 Filtro por status (Em uso, Armazenado, Em manutenção, Descartado)
 
 ### Validações
 - ✅ React Hook Form + Zod

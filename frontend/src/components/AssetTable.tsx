@@ -33,7 +33,7 @@ const getStatusColor = (status: AssetStatus): 'success' | 'error' | 'warning' | 
       return 'default';
     case AssetStatusEnum.MAINTENANCE:
       return 'warning';
-    case AssetStatusEnum.RETIRED:
+    case AssetStatusEnum.DISPOSED:
       return 'error';
     default:
       return 'default';
@@ -46,13 +46,13 @@ const getStatusColor = (status: AssetStatus): 'success' | 'error' | 'warning' | 
 const getStatusLabel = (status: AssetStatus): string => {
   switch (status) {
     case AssetStatusEnum.ACTIVE:
-      return 'Ativo';
+      return 'Em uso';
     case AssetStatusEnum.INACTIVE:
-      return 'Inativo';
+      return 'Armazenado';
     case AssetStatusEnum.MAINTENANCE:
-      return 'Manutenção';
-    case AssetStatusEnum.RETIRED:
-      return 'Aposentado';
+      return 'Em manutenção';
+    case AssetStatusEnum.DISPOSED:
+      return 'Descartado';
     default:
       return status;
   }
@@ -92,9 +92,12 @@ const formatCurrency = (value: number): string => {
 
 /**
  * Formata data para pt-BR
+ * Usa parsing local para evitar problemas de timezone
  */
 const formatDate = (dateString: string): string => {
-  return new Date(dateString).toLocaleDateString('pt-BR');
+  const [year, month, day] = dateString.split('-');
+  const date = new Date(Number(year), Number(month) - 1, Number(day));
+  return date.toLocaleDateString('pt-BR');
 };
 
 /**

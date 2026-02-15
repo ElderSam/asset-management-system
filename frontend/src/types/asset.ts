@@ -1,24 +1,28 @@
 /**
- * Asset Status Enum
+ * Asset Status - valores possíveis de status
  */
-export enum AssetStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
-  MAINTENANCE = 'MAINTENANCE',
-  RETIRED = 'RETIRED',
-}
+export const AssetStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  MAINTENANCE: 'MAINTENANCE',
+  DISPOSED: 'DISPOSED',
+} as const;
+
+export type AssetStatus = typeof AssetStatus[keyof typeof AssetStatus];
 
 /**
- * Asset Category Enum
+ * Asset Category - valores possíveis de categoria
  */
-export enum AssetCategory {
-  COMPUTER = 'COMPUTER',
-  MONITOR = 'MONITOR',
-  PERIPHERAL = 'PERIPHERAL',
-  NETWORK = 'NETWORK',
-  FURNITURE = 'FURNITURE',
-  OTHER = 'OTHER',
-}
+export const AssetCategory = {
+  COMPUTER: 'COMPUTER',
+  MONITOR: 'MONITOR',
+  PERIPHERAL: 'PERIPHERAL',
+  NETWORK: 'NETWORK',
+  FURNITURE: 'FURNITURE',
+  OTHER: 'OTHER',
+} as const;
+
+export type AssetCategory = typeof AssetCategory[keyof typeof AssetCategory];
 
 /**
  * Asset Interface - representa um ativo completo
