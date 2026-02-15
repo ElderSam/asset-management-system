@@ -67,11 +67,13 @@ const assetSchema = z.object({
       message: 'Valor deve ser um número',
     })
     .positive('Valor deve ser maior que zero')
-    .max(999999999, 'Valor muito alto'),
+    .max(999999999, 'Valor muito alto')
+    .optional()
+    .or(z.literal(0)),
   location: z
     .string()
-    .min(3, 'Localização deve ter no mínimo 3 caracteres')
-    .max(200, 'Localização deve ter no máximo 200 caracteres'),
+    .max(200, 'Localização deve ter no máximo 200 caracteres')
+    .optional(),
   description: z
     .string()
     .max(500, 'Descrição deve ter no máximo 500 caracteres')
@@ -256,9 +258,8 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
                   <TextField
                     {...field}
                     type="number"
-                    label="Valor (R$)"
+                    label="Valor (R$) - Opcional"
                     fullWidth
-                    required
                     inputProps={{ step: '0.01', min: '0' }}
                     onChange={(e) => field.onChange(parseFloat(e.target.value))}
                     error={!!errors.purchaseValue}
@@ -275,9 +276,8 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Localização"
+                  label="Localização - Opcional"
                   fullWidth
-                  required
                   error={!!errors.location}
                   helperText={errors.location?.message}
                 />

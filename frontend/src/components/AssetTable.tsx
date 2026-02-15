@@ -36,7 +36,7 @@ const getStatusColor = (status: AssetStatus): 'success' | 'error' | 'warning' | 
     case AssetStatusEnum.DISPOSED:
       return 'error';
     default:
-      return 'default';
+      return 'info';
   }
 };
 
@@ -159,13 +159,13 @@ export default function AssetTable({ assets, onEdit, onDelete }: AssetTableProps
               </TableCell>
               <TableCell align="right">
                 <Typography variant="body2" fontWeight={500}>
-                  {formatCurrency(asset.purchaseValue)}
+                  {asset.purchaseValue ? formatCurrency(asset.purchaseValue) : '-'}
                 </Typography>
               </TableCell>
               <TableCell>{formatDate(asset.purchaseDate)}</TableCell>
               <TableCell>
                 <Typography variant="body2" className={styles.location}>
-                  {asset.location}
+                  {asset.location || '-'}
                 </Typography>
               </TableCell>
               <TableCell className={styles.actionCell}>

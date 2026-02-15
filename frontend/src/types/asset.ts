@@ -34,8 +34,8 @@ export interface Asset {
   category: AssetCategory;
   status: AssetStatus;
   purchaseDate: string; // ISO date string
-  purchaseValue: number;
-  location: string;
+  purchaseValue?: number;
+  location?: string;
   description?: string;
   createdAt?: string;
   updatedAt?: string;
