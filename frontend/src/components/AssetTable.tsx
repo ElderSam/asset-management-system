@@ -177,7 +177,8 @@ export default function AssetTable({ assets, onEdit, onDelete }: AssetTableProps
                   size="small"
                   color="primary"
                   onClick={() => onEdit(asset)}
-                  aria-label="editar"
+                  aria-label={`Editar ${asset.name}`}
+                  title="Editar"
                 >
                   <EditIcon fontSize="small" />
                 </IconButton>
@@ -185,7 +186,8 @@ export default function AssetTable({ assets, onEdit, onDelete }: AssetTableProps
                   size="small"
                   color="error"
                   onClick={() => onDelete(asset.id)}
-                  aria-label="excluir"
+                  aria-label={`Excluir ${asset.name}`}
+                  title="Excluir"
                 >
                   <DeleteIcon fontSize="small" />
                 </IconButton>
