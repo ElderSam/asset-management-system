@@ -8,7 +8,7 @@ Este arquivo serve como guia de progresso do projeto.
 
 - [x] **FASE 0:** Pré-requisitos instalados
 - [x] **FASE 1:** Repositório criado e estrutura inicial
-- [ ] **FASE 2:** Frontend com dados mockados
+- [x] **FASE 2:** Frontend com dados mockados
 - [ ] **FASE 3:** Backend com Spring Boot
 - [ ] **FASE 4:** Docker Compose
 - [ ] **FASE 5:** Integração Frontend ↔ Backend
@@ -49,9 +49,9 @@ Este arquivo serve como guia de progresso do projeto.
 
 ---
 
-## 🚧 FASE 2: FRONTEND COM DADOS MOCKADOS
+## ✅ FASE 2: FRONTEND COM DADOS MOCKADOS (COMPLETO)
 
-**Status:** 🚧 Em andamento  
+**Status:** ✅ Concluído  
 **Tempo estimado:** 8-10h (1-1.5 dias)
 
 ### Setup Inicial (1-2h)
@@ -130,14 +130,14 @@ Este arquivo serve como guia de progresso do projeto.
 - [x] Confirmação de exclusão (Dialog)
 
 ### Dockerfile Frontend
-- [ ] Criar `frontend/Dockerfile`
-- [ ] Multi-stage build (build + nginx)
-- [ ] Testar: `docker build -t frontend .`
+- [x] Criar `frontend/Dockerfile`
+- [x] Multi-stage build (build + nginx)
+- [x] Testar: `docker build -t frontend .`
 
 ### Documentação
-- [ ] Atualizar `frontend/README.md`
-- [ ] Screenshots da aplicação
-- [ ] Commit: `feat: implement frontend with mock data`
+- [x] Atualizar `frontend/README.md`
+- [x] Screenshots da aplicação
+- [x] Commit: `feat: implement frontend with mock data`
 
 ---
 
