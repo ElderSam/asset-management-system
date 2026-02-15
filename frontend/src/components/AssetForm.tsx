@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -79,24 +80,53 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
   } = useForm<AssetFormData>({
     resolver: zodResolver(assetSchema),
     defaultValues: {
-      name: asset?.name || '',
-      serialNumber: asset?.serialNumber || '',
-      category: asset?.category || AssetCategory.COMPUTER,
-      status: asset?.status || AssetStatus.ACTIVE,
-      purchaseDate: asset?.purchaseDate || new Date().toISOString().split('T')[0],
-      purchaseValue: asset?.purchaseValue || 0,
-      location: asset?.location || '',
-      description: asset?.description || '',
+      name: '',
+      serialNumber: '',
+      category: AssetCategory.COMPUTER,
+      status: AssetStatus.ACTIVE,
+      purchaseDate: new Date().toISOString().split('T')[0],
+      purchaseValue: 0,
+      location: '',
+      description: '',
     },
   });
 
+  // Atualiza os valores do formulário quando o asset muda (modo edição)
+  useEffect(() => {
+    if (open) {
+      if (asset) {
+        // Modo edição: preenche com dados do ativo
+        reset({
+          name: asset.name,
+          serialNumber: asset.serialNumber,
+          category: asset.category,
+          status: asset.status,
+          purchaseDate: asset.purchaseDate,
+          purchaseValue: asset.purchaseValue,
+          location: asset.location,
+          description: asset.description || '',
+        });
+      } else {
+        // Modo criação: limpa o formulário
+        reset({
+          name: '',
+          serialNumber: '',
+          category: AssetCategory.COMPUTER,
+          status: AssetStatus.ACTIVE,
+          purchaseDate: new Date().toISOString().split('T')[0],
+          purchaseValue: 0,
+          location: '',
+          description: '',
+        });
+      }
+    }
+  }, [open, asset, reset]);
+
   const handleFormSubmit = (data: AssetFormData) => {
     onSubmit(data);
-    reset();
   };
 
   const handleClose = () => {
-    reset();
     onClose();
   };
 
