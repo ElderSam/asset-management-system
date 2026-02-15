@@ -25,12 +25,12 @@ interface AssetTableProps {
 /**
  * Retorna a cor do badge de status
  */
-const getStatusColor = (status: AssetStatus): 'success' | 'error' | 'warning' | 'default' => {
+const getStatusColor = (status: AssetStatus): 'success' | 'error' | 'warning' | 'info' => {
   switch (status) {
     case AssetStatusEnum.ACTIVE:
       return 'success';
     case AssetStatusEnum.INACTIVE:
-      return 'default';
+      return 'info';
     case AssetStatusEnum.MAINTENANCE:
       return 'warning';
     case AssetStatusEnum.DISPOSED:
