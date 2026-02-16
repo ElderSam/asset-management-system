@@ -4,6 +4,7 @@ import com.assets.model.Asset;
 import com.assets.model.AssetCategory;
 import com.assets.model.AssetStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 // Repository para operações de persistência da entidade Asset
 @Repository
-public interface AssetRepository extends JpaRepository<Asset, Long> {
+public interface AssetRepository extends JpaRepository<Asset, Long>, JpaSpecificationExecutor<Asset> {
 
     // Busca ativo pelo número de série
     Optional<Asset> findBySerialNumber(String serialNumber);
