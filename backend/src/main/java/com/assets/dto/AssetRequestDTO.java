@@ -30,7 +30,6 @@ public record AssetRequestDTO(
         @PastOrPresent(message = "Purchase date cannot be in the future")
         LocalDate purchaseDate,
 
-        @DecimalMin(value = "0.01", message = "Purchase value must be greater than zero")
         BigDecimal purchaseValue,
 
         @Size(max = 200, message = "Location must not exceed 200 characters")

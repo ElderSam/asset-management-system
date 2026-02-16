@@ -1,6 +1,7 @@
 package com.assets.dto;
 
 import com.assets.model.Asset;
+import java.math.BigDecimal;
 
 /**
  * Mapper para conversão entre Entity (Asset) e DTOs (Records)
@@ -44,7 +45,7 @@ public class AssetMapper {
         asset.setCategory(dto.category());
         asset.setStatus(dto.status());
         asset.setPurchaseDate(dto.purchaseDate());
-        asset.setPurchaseValue(dto.purchaseValue());
+        asset.setPurchaseValue(dto.purchaseValue() != null ? dto.purchaseValue() : BigDecimal.ZERO);
         asset.setLocation(dto.location());
         asset.setDescription(dto.description());
 
@@ -64,7 +65,7 @@ public class AssetMapper {
         asset.setCategory(dto.category());
         asset.setStatus(dto.status());
         asset.setPurchaseDate(dto.purchaseDate());
-        asset.setPurchaseValue(dto.purchaseValue());
+        asset.setPurchaseValue(dto.purchaseValue() != null ? dto.purchaseValue() : BigDecimal.ZERO);
         asset.setLocation(dto.location());
         asset.setDescription(dto.description());
     }

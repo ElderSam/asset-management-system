@@ -53,7 +53,7 @@ public class Asset {
     @Column(nullable = false)
     private LocalDate purchaseDate;
 
-    @DecimalMin(value = "0.0", inclusive = false, message = "Purchase value must be greater than zero")
+    @DecimalMin(value = "0.0", inclusive = true, message = "Purchase value cannot be negative")
     @Column(precision = 10, scale = 2)
     private BigDecimal purchaseValue;
 
