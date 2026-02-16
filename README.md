@@ -42,12 +42,11 @@ Sistema web para gerenciamento de ativos empresariais (computadores, monitores, 
 
 ### **Backend**
 - [Java 25](https://openjdk.org/) - Linguagem
-- [Spring Boot 3](https://spring.io/projects/spring-boot) - Framework
+- [Spring Boot 4](https://spring.io/projects/spring-boot) - Framework
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa) - Persistência
 - [PostgreSQL 16](https://www.postgresql.org/) - Banco de dados
 - [Bean Validation](https://beanvalidation.org/) - Validações
-- [Lombok](https://projectlombok.org/) - Redução de boilerplate
-- [Maven](https://maven.apache.org/) - Gerenciador de dependências
+- Maven - Build tool
 
 ### **DevOps**
 - [Docker](https://www.docker.com/) - Containerização
@@ -88,8 +87,7 @@ Sistema web para gerenciamento de ativos empresariais (computadores, monitores, 
 
 ### Desenvolvimento Local (sem Docker)
 - [Node.js 20+](https://nodejs.org/)
-- [Java 25](https://openjdk.org/)
-- [Maven 3.9+](https://maven.apache.org/)
+- [Java 25](https://openjdk.org/) + Maven
 - [PostgreSQL 16](https://www.postgresql.org/)
 
 ---

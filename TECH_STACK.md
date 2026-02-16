@@ -84,9 +84,9 @@ Este documento detalha todas as tecnologias utilizadas no projeto e as justifica
 
 | Tecnologia | Versão | Justificativa |
 |------------|--------|---------------|
-| **Java** | 25 | Versão mais recente, recursos modernos |
-| **Spring Boot** | 3.2+ | Framework enterprise padrão, produtividade |
-| **Maven** | 3.9+ | Gerenciamento de dependências |
+| **Java** | 25 | Versão LTS mais recente |
+| **Spring Boot** | 4.0+ | Framework enterprise padrão |
+| **Maven** | - | Build tool (gerado pelo Spring Initializr) |
 
 ### **Persistência**
 

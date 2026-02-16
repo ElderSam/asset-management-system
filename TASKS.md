@@ -25,11 +25,9 @@ Este arquivo serve como guia de progresso do projeto.
 **Tempo gasto:** 0.5h
 
 - [x] Node.js 20+ instalado
-- [x] Java 25 instalado
-- [x] Maven instalado
+- [x] Java 25 + Maven instalado
 - [x] Docker Desktop instalado e iniciado
 - [x] Git configurado
-- [x] VS Code com extensões
 
 ---
 
@@ -147,9 +145,9 @@ Este arquivo serve como guia de progresso do projeto.
 **Tempo estimado:** 8-10h (1-1.5 dias)
 
 ### Setup Inicial (1h)
-- [ ] Criar projeto Spring Boot (Spring Initializr)
-  - [ ] Dependencies: Web, JPA, PostgreSQL, Validation, Lombok
-  - [ ] Java 25, Maven, Jar packaging
+- [ ] Criar projeto Spring Boot via Spring Initializr CLI
+  - [ ] Dependencies: web, data-jpa, postgresql, validation
+  - [ ] Java 25, Spring Boot 4.0.2, Maven
 - [ ] Estrutura de pacotes:
   - [ ] `config/`
   - [ ] `controller/`
