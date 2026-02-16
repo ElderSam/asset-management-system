@@ -2,6 +2,10 @@ package com.assets.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,6 +18,10 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "assets")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Asset {
 
     @Id
@@ -64,121 +72,4 @@ public class Asset {
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    // Constructors
-    public Asset() {
-    }
-
-    public Asset(String name, String serialNumber, AssetCategory category, AssetStatus status, LocalDate purchaseDate) {
-        this.name = name;
-        this.serialNumber = serialNumber;
-        this.category = category;
-        this.status = status;
-        this.purchaseDate = purchaseDate;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public AssetCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(AssetCategory category) {
-        this.category = category;
-    }
-
-    public AssetStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(AssetStatus status) {
-        this.status = status;
-    }
-
-    public LocalDate getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public void setPurchaseDate(LocalDate purchaseDate) {
-        this.purchaseDate = purchaseDate;
-    }
-
-    public BigDecimal getPurchaseValue() {
-        return purchaseValue;
-    }
-
-    public void setPurchaseValue(BigDecimal purchaseValue) {
-        this.purchaseValue = purchaseValue;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    @Override
-    public String toString() {
-        return "Asset{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", serialNumber='" + serialNumber + '\'' +
-                ", category=" + category +
-                ", status=" + status +
-                ", purchaseDate=" + purchaseDate +
-                ", purchaseValue=" + purchaseValue +
-                ", location='" + location + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }
