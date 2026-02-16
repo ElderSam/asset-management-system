@@ -65,8 +65,8 @@ src/main/java/com/assets/
 - Serial: obrigatório, único, 3-50 caracteres
 - Categoria: obrigatória
 - Status: obrigatório
-- Data de compra: obrigatória, não pode ser futura
-- Valor: opcional, > 0
+- Data de compra: obrigatória, não pode ser futura (@PastOrPresent)
+- Valor: opcional, sem validação
 - Localização: opcional, máx 200 caracteres
 - Descrição: opcional, máx 500 caracteres
 

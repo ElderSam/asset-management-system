@@ -191,15 +191,20 @@ server.port=8080
 ## Validações
 
 **Frontend (Zod):**
-- Nome: 3-100 caracteres
-- Serial: 3-50 caracteres, único
-- Data de compra: não pode ser futura
-- Valor: > 0, máximo 999.999.999
+- Nome: 3-100 caracteres, obrigatório
+- Serial: 3-50 caracteres, obrigatório
+- Data de compra: obrigatória, formato válido
+- Valor: >= 0, máximo 999.999.999
+- Localização: máximo 200 caracteres (opcional)
+- Descrição: máximo 500 caracteres (opcional)
 
 **Backend (Bean Validation):**
-- Mesmas regras do frontend
-- Validação adicional no banco (unique constraint no serialNumber)
-- Exception handlers customizados com mensagens claras
+- Nome: 3-100 caracteres, obrigatório
+- Serial: 3-50 caracteres, obrigatório, único no banco
+- Data de compra: obrigatória, não pode ser futura
+- Valor: sem validação (opcional)
+- Localização: máximo 200 caracteres (opcional)
+- Descrição: máximo 500 caracteres (opcional)
 
 ## Troubleshooting
 
@@ -217,7 +222,3 @@ lsof -ti:5173 | xargs kill -9
 docker-compose down -v  # Remove volumes
 docker-compose up --build
 ```
-
----
-
-Desenvolvido como desafio técnico Full Stack
