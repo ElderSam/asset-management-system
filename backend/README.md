@@ -160,6 +160,70 @@ spring.datasource.password=postgres
 server.port=8080
 ```
 
+## 🧪 Testes
+
+### Executar Testes
+
+```bash
+# Via Maven (local)
+mvn test
+
+# Via Docker (recomendado)
+docker run --rm -v "$(pwd):/app" -w /app maven:3-eclipse-temurin-21 mvn test
+```
+
+### Gerar Relatório de Cobertura
+
+```bash
+mvn clean test jacoco:report
+
+# Relatório HTML em: target/site/jacoco/index.html
+```
+
+### Métricas de Cobertura
+
+✅ **Cobertura Total: 90%**
+
+| Métrica | Cobertura | Status |
+|---------|-----------|--------|
+| Instruções | 90% (611/676) | ✅ |
+| Linhas | 86% (128/148) | ✅ |
+| Branches | 73% (19/26) | ✅ |
+| Métodos | 79% (31/39) | ✅ |
+| Classes | 100% (13/13) | ✅ |
+
+### Testes Implementados
+
+**AssetControllerIntegrationTest** (16 testes)
+- ✅ GET /api/assets - lista vazia
+- ✅ GET /api/assets - com dados
+- ✅ GET /api/assets?search=valor - busca por nome
+- ✅ GET /api/assets?search=SN - busca por serial number
+- ✅ GET /api/assets?category=COMPUTER - filtro por categoria
+- ✅ GET /api/assets?status=ACTIVE - filtro por status
+- ✅ POST /api/assets - criação com sucesso
+- ✅ POST /api/assets - purchaseValue zero
+- ✅ POST /api/assets - validação nome vazio
+- ✅ POST /api/assets - validação serial number curto
+- ✅ POST /api/assets - serial number duplicado
+- ✅ PUT /api/assets/{id} - atualização com sucesso
+- ✅ PUT /api/assets/{id} - ativo não encontrado (404)
+- ✅ PUT /api/assets/{id} - serial number duplicado
+- ✅ DELETE /api/assets/{id} - exclusão com sucesso
+- ✅ DELETE /api/assets/{id} - ativo não encontrado (404)
+
+**AssetManagementApplicationTests** (1 teste)
+- ✅ Context Loads - verifica inicialização do Spring
+
+### Tecnologias de Teste
+
+- **JUnit 5** - Framework de testes
+- **Spring Boot Test** - Testes de integração
+- **MockMvc** - Testes de API REST
+- **H2 Database** - Banco em memória para testes
+- **JaCoCo** - Cobertura de código
+- **Hamcrest** - Matchers para assertions
+
 ## 🐳 Docker
 
 Build da imagem:

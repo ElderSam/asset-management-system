@@ -2,10 +2,12 @@
 
 Sistema de Gerenciamento de Ativos - Full Stack Application
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+![Status](https://img.shields.io/badge/status-conclu%C3%ADdo-success)
 ![React](https://img.shields.io/badge/React-19-blue)
-![Java](https://img.shields.io/badge/Java-25-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-green)
+![Java](https://img.shields.io/badge/Java-21-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.2-green)
+![Test Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen)
+![Tests](https://img.shields.io/badge/tests-17%20passing-success)
 
 ---
 
@@ -252,16 +254,32 @@ asset-management-system/
 
 ## 🧪 Testes
 
+### Backend (17 testes - 100% passing ✅)
+
+#### Executar testes localmente
+```bash
+cd backend
+mvn test
+```
+
+#### Executar via Docker
+```bash
+docker run --rm -v "$(pwd)/backend:/app" -w /app maven:3-eclipse-temurin-21 mvn test
+```
+
+#### Cobertura de Código (JaCoCo)
+```bash
+cd backend
+mvn clean test jacoco:report
+
+# Relatório HTML disponível em:
+# backend/target/site/jacoco/index.html
+```
+
 ### Frontend
 ```bash
 cd frontend
 npm run test
-```
-
-### Backend
-```bash
-cd backend
-mvn test
 ```
 
 ---
@@ -398,7 +416,3 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 Projeto desenvolvido como parte de um desafio técnico Full Stack.
 
 **Stack:** React 19 + TypeScript + Material UI + TanStack Query + Java 25 + Spring Boot + PostgreSQL
-
----
-
-**Desenvolvido com ❤️ em Fevereiro de 2026**

@@ -84,9 +84,9 @@ Este documento detalha todas as tecnologias utilizadas no projeto e as justifica
 
 | Tecnologia | Versão | Justificativa |
 |------------|--------|---------------|
-| **Java** | 25 | Versão LTS mais recente |
-| **Spring Boot** | 4.0+ | Framework enterprise padrão |
-| **Maven** | - | Build tool (gerado pelo Spring Initializr) |
+| **Java** | 21 LTS | Versão LTS estável, excelente suporte |
+| **Spring Boot** | 4.0.2 | Framework enterprise padrão |
+| **Maven** | 3.8.7 | Build tool (gerado pelo Spring Initializr) |
 
 ### **Persistência**
 
@@ -109,6 +109,18 @@ Este documento detalha todas as tecnologias utilizadas no projeto e as justifica
 | Tecnologia | Versão | Justificativa |
 |------------|--------|---------------|
 | **Lombok** | 1.18+ | Reduz boilerplate (@Data, @Builder, etc) |
+
+### **Testes**
+
+| Tecnologia | Versão | Justificativa |
+|------------|--------|---------------|
+| **JUnit 5** | - | Framework de testes padrão Java |
+| **Spring Boot Test** | - | Testes de integração com Spring |
+| **MockMvc** | - | Testes de API REST sem servidor |
+| **H2 Database** | - | Banco em memória para testes |
+| **JaCoCo** | 0.8.12 | Cobertura de código |
+| **Hamcrest** | - | Matchers para assertions |
+| **Jackson JSR310** | - | Serialização de LocalDate/LocalDateTime |
 
 ### **Documentação API (Opcional)**
 
@@ -231,6 +243,26 @@ Este documento detalha todas as tecnologias utilizadas no projeto e as justifica
         <optional>true</optional>
     </dependency>
     
+    <!-- H2 Database (testes) -->
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <scope>test</scope>
+    </dependency>
+    
+    <!-- Spring Boot Test -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+    
+    <!-- Jackson JSR310 (LocalDate support) -->
+    <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+    </dependency>
+    
     <!-- SpringDoc OpenAPI (Swagger) -->
     <dependency>
         <groupId>org.springdoc</groupId>
@@ -238,6 +270,32 @@ Este documento detalha todas as tecnologias utilizadas no projeto e as justifica
         <version>2.3.0</version>
     </dependency>
 </dependencies>
+
+<build>
+    <plugins>
+        <!-- JaCoCo Plugin (cobertura de código) -->
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.12</version>
+            <executions>
+                <execution>
+                    <id>prepare-agent</id>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>report</id>
+                    <phase>test</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
 ```
 
 ---
@@ -273,16 +331,69 @@ Este documento detalha todas as tecnologias utilizadas no projeto e as justifica
 - Open-source
 - Compatível com todos os serviços de deploy
 
-### 6. **Por que Java 25?**
-- Versão mais recente
-- Features modernas (pattern matching, records, etc)
-- Demonstra conhecimento atualizado
+### 6. **Por que Java 21 LTS?**
+- Versão LTS (Long-Term Support) estável
+- Suporte completo do ecossistema (Maven, Lombok, frameworks)
+- Features modernas (pattern matching, records, virtual threads)
+- Melhor compatibilidade para produção vs Java 25 (non-LTS)
 
 ### 7. **Por que Vite em vez de Create React App?**
 - CRA está deprecated
 - Vite é 10-100x mais rápido
 - Melhor suporte a módulos ES
 - Configuração mínima
+
+### 8. **Por que testes de integração no backend?**
+- ✅ Cobertura de código: **90% exigido pela empresa**
+- ✅ Testa fluxo completo (controller → service → repository → database)
+- ✅ Maior confiança que testes unitários isolados
+- ✅ MockMvc testa API REST sem subir servidor
+- ✅ H2 em memória: testes rápidos e isolados
+- ✅ JaCoCo: métricas objetivas de qualidade
+
+---
+
+## 🧪 ESTRATÉGIA DE TESTES
+
+### **Backend: 90% de Cobertura ✅**
+
+**Tecnologias:**
+- JUnit 5 - Framework de testes
+- Spring Boot Test - Contexto de integração
+- MockMvc - Testes de API REST
+- H2 Database - Banco em memória
+- JaCoCo - Relatórios de cobertura
+- Hamcrest - Matchers expressivos
+
+**Abordagem:**
+1. **Testes de Integração** (preferência)
+   - Testam controller + service + repository + database
+   - Validam end-to-end de cada endpoint
+   - Cobrem casos de sucesso e erro
+   - 16 testes no AssetControllerIntegrationTest
+
+2. **Testes de Contexto**
+   - Verificam inicialização do Spring
+   - Detectam problemas de configuração
+
+**Cobertura Alcançada:**
+- Instruções: 90% ✅
+- Linhas: 86% ✅  
+- Branches: 73% ✅
+- Métodos: 79% ✅
+- Classes: 100% ✅
+
+**Por que não testes unitários puros?**
+- Testes de integração fornecem mais confiança
+- Detectam problemas de integração entre camadas
+- Menos mocks = testes mais realistas
+- Cobertura maior com menos testes
+
+### **Frontend: Não Implementado**
+- Foco no backend (diferencial do desafio)
+- Frontend testado manualmente
+- TanStack Query tem testes próprios
+- React Hook Form tem testes próprios
 
 ---
 
@@ -327,7 +438,10 @@ Este documento detalha todas as tecnologias utilizadas no projeto e as justifica
 
 ### Backend
 - [ ] Spring Security (autenticação/autorização)
-- [ ] Testes (JUnit + Mockito)
+- [x] **Testes (JUnit + MockMvc) - ✅ IMPLEMENTADO**
+  - 17 testes de integração
+  - Cobertura de 90% (instruções)
+  - JaCoCo configurado
 - [ ] Migrations (Flyway/Liquibase)
 - [ ] Observabilidade (Actuator + Prometheus)
 - [ ] Rate Limiting
