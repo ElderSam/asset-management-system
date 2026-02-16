@@ -44,7 +44,7 @@ Sistema web para gerenciamento de ativos empresariais (computadores, monitores, 
 - [Java 25](https://openjdk.org/) - Linguagem
 - [Spring Boot 4](https://spring.io/projects/spring-boot) - Framework
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa) - Persistência
-- [PostgreSQL 16](https://www.postgresql.org/) - Banco de dados
+- [PostgreSQL 18](https://www.postgresql.org/) - Banco de dados
 - [Bean Validation](https://beanvalidation.org/) - Validações
 - Maven - Build tool
 
@@ -104,10 +104,10 @@ cd asset-management-system
 # 2. Subir todos os serviços (frontend + backend + banco)
 docker-compose up --build
 
-# Aguarde os containers iniciarem...
+# Aguarde os containers iniciarem (pode levar alguns minutos no primeiro build)
 # ✅ Frontend estará em: http://localhost:5173
-# ✅ Backend estará em: http://localhost:8080
-# ✅ Banco de dados: localhost:5432
+# ✅ Backend API estará em: http://localhost:8080/api/assets
+# ✅ Banco de dados PostgreSQL: localhost:5432
 ```
 
 **Parar os serviços:**

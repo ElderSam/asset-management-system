@@ -7,7 +7,7 @@ API REST desenvolvida com Spring Boot para gerenciamento de ativos empresariais.
 - Java 25
 - Spring Boot 4.0.2
 - Spring Data JPA
-- PostgreSQL 16
+- PostgreSQL 18
 - Bean Validation
 - Lombok
 - Maven
@@ -16,7 +16,7 @@ API REST desenvolvida com Spring Boot para gerenciamento de ativos empresariais.
 
 - Java 25 instalado
 - Maven 3.9+ instalado
-- PostgreSQL 16 rodando (ou via Docker)
+- PostgreSQL 18 rodando (ou via Docker)
 
 ## 🗄️ Configurar Banco de Dados
 
@@ -28,7 +28,7 @@ docker run --name asset-db \
   -e POSTGRES_USER=postgres \
   -e POSTGRES_PASSWORD=postgres \
   -p 5432:5432 \
-  -d postgres:16
+  -d postgres:18-alpine
 ```
 
 ### Opção 2: PostgreSQL local

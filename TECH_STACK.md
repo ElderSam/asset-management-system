@@ -94,7 +94,7 @@ Este documento detalha todas as tecnologias utilizadas no projeto e as justifica
 |------------|--------|---------------|
 | **Spring Data JPA** | 3.2+ | Abstração sobre JPA, repositories automáticos |
 | **Hibernate** | 6.4+ | Implementação JPA padrão |
-| **PostgreSQL** | 16+ | Banco relacional robusto, open-source |
+| **PostgreSQL** | 18+ | Banco relacional robusto, open-source |
 | **PostgreSQL Driver** | 42.7+ | Driver JDBC oficial |
 
 ### **Validação**
