@@ -1,241 +1,125 @@
-# Asset Management - Backend
+# Backend - Asset Management API
 
-API REST desenvolvida com Spring Boot para gerenciamento de ativos empresariais.
+API REST com Spring Boot para gerenciamento de ativos empresariais.
 
-## 🚀 Tecnologias
+## Stack
 
-- Java 21
+- Java 21 LTS
 - Spring Boot 4.0.2
 - Spring Data JPA
 - PostgreSQL 18
-- Bean Validation
 - Lombok
-- Maven
+- Bean Validation
 
-## 📋 Pré-requisitos
-
-- Java 21 instalado
-- Maven 3.9+ instalado
-- PostgreSQL 18 rodando (ou via Docker)
-
-## 🗄️ Configurar Banco de Dados
-
-### Opção 1: PostgreSQL via Docker
+## Como Rodar
 
 ```bash
+# 1. PostgreSQL deve estar rodando (porta 5432)
 docker run --name asset-db \
   -e POSTGRES_DB=assetdb \
   -e POSTGRES_USER=postgres \
   -e POSTGRES_PASSWORD=postgres \
   -p 5432:5432 \
   -d postgres:18-alpine
-```
 
-### Opção 2: PostgreSQL local
-
-Criar banco de dados:
-
-```sql
-CREATE DATABASE assetdb;
-```
-
-## ▶️ Como Executar
-
-### 1. Instalar dependências
-
-```bash
+# 2. Compilar e rodar
 mvn clean install
-```
-
-### 2. Rodar aplicação
-
-```bash
 mvn spring-boot:run
+
+# API disponível em: http://localhost:8080
 ```
 
-A API estará disponível em: **http://localhost:8080**
+## Endpoints
 
-## 📡 Endpoints da API
-
-### Base URL: `/api/assets`
+Base URL: `/api/assets`
 
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| GET | `/api/assets` | Lista todos os ativos |
-| GET | `/api/assets?search=dell` | Busca por nome ou nº série |
-| GET | `/api/assets?category=COMPUTER` | Filtra por categoria |
-| GET | `/api/assets?status=ACTIVE` | Filtra por status |
-| GET | `/api/assets/{id}` | Busca ativo por ID |
-| POST | `/api/assets` | Cria novo ativo |
-| PUT | `/api/assets/{id}` | Atualiza ativo existente |
-| DELETE | `/api/assets/{id}` | Remove ativo |
+| GET | `/api/assets` | Lista todos |
+| GET | `/api/assets?search=<termo>` | Busca por nome/serial |
+| GET | `/api/assets?category=<cat>` | Filtra por categoria |
+| GET | `/api/assets?status=<status>` | Filtra por status |
+| GET | `/api/assets/{id}` | Busca por ID |
+| POST | `/api/assets` | Cria novo |
+| PUT | `/api/assets/{id}` | Atualiza |
+| DELETE | `/api/assets/{id}` | Remove |
 
-### Categorias válidas
+**Categorias:** COMPUTER, MONITOR, PERIPHERAL, NETWORK, FURNITURE, OTHER  
+**Status:** ACTIVE, INACTIVE, MAINTENANCE, DISPOSED
 
-- `COMPUTER`
-- `MONITOR`
-- `PERIPHERAL`
-- `NETWORK`
-- `FURNITURE`
-- `OTHER`
-
-### Status válidos
-
-- `ACTIVE`
-- `INACTIVE`
-- `MAINTENANCE`
-- `DISPOSED`
-
-### Exemplo de Payload (POST/PUT)
-
-```json
-{
-  "name": "Dell XPS 15",
-  "serialNumber": "DXP-2024-001",
-  "category": "COMPUTER",
-  "status": "ACTIVE",
-  "purchaseDate": "2024-01-15",
-  "purchaseValue": 3500.00,
-  "location": "São Paulo - Sala 301",
-  "description": "Notebook para desenvolvimento"
-}
-```
-
-### Exemplo de Resposta (GET)
-
-```json
-{
-  "id": 1,
-  "name": "Dell XPS 15",
-  "serialNumber": "DXP-2024-001",
-  "category": "COMPUTER",
-  "status": "ACTIVE",
-  "purchaseDate": "2024-01-15",
-  "purchaseValue": 3500.00,
-  "location": "São Paulo - Sala 301",
-  "description": "Notebook para desenvolvimento",
-  "createdAt": "2024-01-15T10:30:00",
-  "updatedAt": "2024-01-15T10:30:00"
-}
-```
-
-## 🏗️ Estrutura do Projeto
+## Estrutura
 
 ```
-backend/
-├── src/main/java/com/assets/
-│   ├── controller/        # REST Controllers
-│   ├── dto/              # Data Transfer Objects (Records)
-│   ├── exception/        # Custom Exceptions e Handlers
-│   ├── model/            # JPA Entities
-│   ├── repository/       # Spring Data Repositories
-│   └── service/          # Lógica de negócio
-├── src/main/resources/
-│   └── application.properties
-└── pom.xml
+src/main/java/com/assets/
+├── controller/        # REST Controllers
+├── dto/              # DTOs (Records)
+├── exception/        # Exception handlers
+├── model/            # JPA Entities
+├── repository/       # Spring Data Repositories
+└── service/          # Lógica de negócio
 ```
 
-## 🔒 Validações
+## Validações
 
-- Nome: obrigatório, entre 3-100 caracteres
-- Número de série: obrigatório, único, entre 3-50 caracteres
+- Nome: obrigatório, 3-100 caracteres
+- Serial: obrigatório, único, 3-50 caracteres
 - Categoria: obrigatória
 - Status: obrigatório
 - Data de compra: obrigatória, não pode ser futura
-- Valor de compra: opcional, deve ser > 0
-- Localização: opcional, máximo 200 caracteres
-- Descrição: opcional, máximo 500 caracteres
+- Valor: opcional, > 0
+- Localização: opcional, máx 200 caracteres
+- Descrição: opcional, máx 500 caracteres
 
-## ⚙️ Configuração
+## Testes
 
-Editar `src/main/resources/application.properties`:
+```bash
+# Rodar testes
+mvn test
+
+# Gerar relatório de cobertura (JaCoCo)
+mvn clean test jacoco:report
+# Abrir: target/site/jacoco/index.html
+```
+
+**Cobertura: 90%**
+
+| Métrica | Cobertura |
+|---------|-----------|
+| Instruções | 90% (611/676) |
+| Linhas | 86% (128/148) |
+| Branches | 73% (19/26) |
+| Métodos | 79% (31/39) |
+| Classes | 100% (13/13) |
+
+**Testes implementados:**
+- 16 testes de integração (AssetControllerIntegrationTest)
+- 1 teste de contexto (AssetManagementApplicationTests)
+
+Tecnologias de teste: JUnit 5, Spring Boot Test, MockMvc, H2, JaCoCo, Hamcrest
+
+## Configuração
+
+`src/main/resources/application.properties`:
 
 ```properties
-# Banco de dados
+# Database
 spring.datasource.url=jdbc:postgresql://localhost:5432/assetdb
 spring.datasource.username=postgres
 spring.datasource.password=postgres
 
-# Porta do servidor
+# JPA
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# Server
 server.port=8080
 ```
 
-## 🧪 Testes
-
-### Executar Testes
+## Docker
 
 ```bash
-# Via Maven (local)
-mvn test
-
-# Via Docker (recomendado)
-docker run --rm -v "$(pwd):/app" -w /app maven:3-eclipse-temurin-21 mvn test
-```
-
-### Gerar Relatório de Cobertura
-
-```bash
-mvn clean test jacoco:report
-
-# Relatório HTML em: target/site/jacoco/index.html
-```
-
-### Métricas de Cobertura
-
-✅ **Cobertura Total: 90%**
-
-| Métrica | Cobertura | Status |
-|---------|-----------|--------|
-| Instruções | 90% (611/676) | ✅ |
-| Linhas | 86% (128/148) | ✅ |
-| Branches | 73% (19/26) | ✅ |
-| Métodos | 79% (31/39) | ✅ |
-| Classes | 100% (13/13) | ✅ |
-
-### Testes Implementados
-
-**AssetControllerIntegrationTest** (16 testes)
-- ✅ GET /api/assets - lista vazia
-- ✅ GET /api/assets - com dados
-- ✅ GET /api/assets?search=valor - busca por nome
-- ✅ GET /api/assets?search=SN - busca por serial number
-- ✅ GET /api/assets?category=COMPUTER - filtro por categoria
-- ✅ GET /api/assets?status=ACTIVE - filtro por status
-- ✅ POST /api/assets - criação com sucesso
-- ✅ POST /api/assets - purchaseValue zero
-- ✅ POST /api/assets - validação nome vazio
-- ✅ POST /api/assets - validação serial number curto
-- ✅ POST /api/assets - serial number duplicado
-- ✅ PUT /api/assets/{id} - atualização com sucesso
-- ✅ PUT /api/assets/{id} - ativo não encontrado (404)
-- ✅ PUT /api/assets/{id} - serial number duplicado
-- ✅ DELETE /api/assets/{id} - exclusão com sucesso
-- ✅ DELETE /api/assets/{id} - ativo não encontrado (404)
-
-**AssetManagementApplicationTests** (1 teste)
-- ✅ Context Loads - verifica inicialização do Spring
-
-### Tecnologias de Teste
-
-- **JUnit 5** - Framework de testes
-- **Spring Boot Test** - Testes de integração
-- **MockMvc** - Testes de API REST
-- **H2 Database** - Banco em memória para testes
-- **JaCoCo** - Cobertura de código
-- **Hamcrest** - Matchers para assertions
-
-## 🐳 Docker
-
-Build da imagem:
-
-```bash
-docker build -t asset-management-backend .
-```
-
-Rodar container:
-
-```bash
+docker build -t asset-backend .
 docker run -p 8080:8080 \
   -e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/assetdb \
-  asset-management-backend
+  asset-backend
 ```
