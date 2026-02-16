@@ -43,7 +43,7 @@ Sistema web para gerenciamento de ativos empresariais (computadores, monitores, 
 - [React Router](https://reactrouter.com/) - Roteamento
 
 ### **Backend**
-- [Java 25](https://openjdk.org/) - Linguagem
+- [Java 21](https://openjdk.org/) - Linguagem
 - [Spring Boot 4](https://spring.io/projects/spring-boot) - Framework
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa) - Persistência
 - [PostgreSQL 18](https://www.postgresql.org/) - Banco de dados
@@ -89,7 +89,7 @@ Sistema web para gerenciamento de ativos empresariais (computadores, monitores, 
 
 ### Desenvolvimento Local (sem Docker)
 - [Node.js 20+](https://nodejs.org/)
-- [Java 25](https://openjdk.org/) + Maven
+- [Java 21](https://openjdk.org/) + Maven
 - [PostgreSQL 16](https://www.postgresql.org/)
 
 ---
@@ -415,4 +415,4 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 Projeto desenvolvido como parte de um desafio técnico Full Stack.
 
-**Stack:** React 19 + TypeScript + Material UI + TanStack Query + Java 25 + Spring Boot + PostgreSQL
+**Stack:** React 19 + TypeScript + Material UI + TanStack Query + Java 21 + Spring Boot + PostgreSQL

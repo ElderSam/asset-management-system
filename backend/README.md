@@ -4,7 +4,7 @@ API REST desenvolvida com Spring Boot para gerenciamento de ativos empresariais.
 
 ## 🚀 Tecnologias
 
-- Java 25
+- Java 21
 - Spring Boot 4.0.2
 - Spring Data JPA
 - PostgreSQL 18
@@ -14,7 +14,7 @@ API REST desenvolvida com Spring Boot para gerenciamento de ativos empresariais.
 
 ## 📋 Pré-requisitos
 
-- Java 25 instalado
+- Java 21 instalado
 - Maven 3.9+ instalado
 - PostgreSQL 18 rodando (ou via Docker)
 

@@ -24,7 +24,7 @@ Este arquivo contém regras obrigatórias para desenvolvimento com GitHub Copilo
 
 ### Backend
 ✅ **USAR:**
-- Java 25
+- Java 21
 - Spring Boot 3
 - Spring Data JPA
 - PostgreSQL
