@@ -63,13 +63,10 @@ const assetSchema = z.object({
       { message: 'Data inválida' }
     ),
   purchaseValue: z
-    .number({
-      message: 'Valor deve ser um número',
-    })
-    .positive('Valor deve ser maior que zero')
+    .number()
+    .min(0, 'Valor não pode ser negativo')
     .max(999999999, 'Valor muito alto')
-    .optional()
-    .or(z.literal(0)),
+    .default(0),
   location: z
     .string()
     .max(200, 'Localização deve ter no máximo 200 caracteres')
@@ -261,7 +258,10 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
                     label="Valor (R$) - Opcional"
                     fullWidth
                     inputProps={{ step: '0.01', min: '0' }}
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      field.onChange(value === '' ? 0 : parseFloat(value));
+                    }}
                     error={!!errors.purchaseValue}
                     helperText={errors.purchaseValue?.message}
                   />

@@ -6,7 +6,7 @@ import AssetFiltersComponent from '../components/AssetFilters';
 import AssetTable from '../components/AssetTable';
 import AssetForm from '../components/AssetForm';
 import ConfirmDialog from '../components/ConfirmDialog';
-import * as mockService from '../services/mockService';
+import * as assetService from '../services/assetService';
 import styles from './Dashboard.module.css';
 
 /**
@@ -53,7 +53,7 @@ export default function Dashboard() {
   const loadAssets = async () => {
     try {
       setLoading(true);
-      const data = await mockService.getAssets();
+      const data = await assetService.getAssets();
       setAssets(data);
     } catch (error) {
       setSnackbar({
@@ -115,7 +115,7 @@ export default function Dashboard() {
       
       if (editingAsset) {
         // Editar ativo existente
-        const updatedAsset = await mockService.updateAsset(editingAsset.id, data);
+        const updatedAsset = await assetService.updateAsset(editingAsset.id, data);
         setAssets((prev) =>
           prev.map((asset) => (asset.id === updatedAsset.id ? updatedAsset : asset))
         );
@@ -126,7 +126,7 @@ export default function Dashboard() {
         });
       } else {
         // Criar novo ativo
-        const newAsset = await mockService.createAsset(data);
+        const newAsset = await assetService.createAsset(data);
         setAssets((prev) => [newAsset, ...prev]);
         setSnackbar({
           open: true,
@@ -159,7 +159,7 @@ export default function Dashboard() {
     if (assetToDelete) {
       try {
         setActionLoading(true);
-        await mockService.deleteAsset(assetToDelete);
+        await assetService.deleteAsset(assetToDelete);
         setAssets((prev) => prev.filter((asset) => asset.id !== assetToDelete));
         setSnackbar({
           open: true,
