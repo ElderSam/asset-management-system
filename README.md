@@ -204,8 +204,7 @@ asset-management-system/
 │   └── pom.xml
 ├── docker-compose.yml           # Orquestração
 ├── README.md                    # Este arquivo
-├── TECH_STACK.md               # Stack detalhada
-└── TASKS.md                    # Checklist de tarefas
+└── TECH_STACK.md               # Stack detalhada
 ```
 
 ---
