@@ -3,12 +3,12 @@ package com.assets.dto;
 import com.assets.model.Asset;
 
 /**
- * Mapper para conversão entre Entity (Asset) e DTOs
+ * Mapper para conversão entre Entity (Asset) e DTOs (Records)
  */
 public class AssetMapper {
 
     /**
-     * Converte Entity para DTO (response)
+     * Converte Entity para DTO Record (response)
      */
     public static AssetDTO toDTO(Asset asset) {
         if (asset == null) {
@@ -31,7 +31,7 @@ public class AssetMapper {
     }
 
     /**
-     * Converte RequestDTO para Entity (para criação)
+     * Converte RequestDTO Record para Entity (para criação)
      */
     public static Asset toEntity(AssetRequestDTO dto) {
         if (dto == null) {
@@ -39,33 +39,33 @@ public class AssetMapper {
         }
 
         Asset asset = new Asset();
-        asset.setName(dto.getName());
-        asset.setSerialNumber(dto.getSerialNumber());
-        asset.setCategory(dto.getCategory());
-        asset.setStatus(dto.getStatus());
-        asset.setPurchaseDate(dto.getPurchaseDate());
-        asset.setPurchaseValue(dto.getPurchaseValue());
-        asset.setLocation(dto.getLocation());
-        asset.setDescription(dto.getDescription());
+        asset.setName(dto.name());
+        asset.setSerialNumber(dto.serialNumber());
+        asset.setCategory(dto.category());
+        asset.setStatus(dto.status());
+        asset.setPurchaseDate(dto.purchaseDate());
+        asset.setPurchaseValue(dto.purchaseValue());
+        asset.setLocation(dto.location());
+        asset.setDescription(dto.description());
 
         return asset;
     }
 
     /**
-     * Atualiza Entity existente com dados do RequestDTO (para update)
+     * Atualiza Entity existente com dados do RequestDTO Record (para update)
      */
     public static void updateEntity(Asset asset, AssetRequestDTO dto) {
         if (asset == null || dto == null) {
             return;
         }
 
-        asset.setName(dto.getName());
-        asset.setSerialNumber(dto.getSerialNumber());
-        asset.setCategory(dto.getCategory());
-        asset.setStatus(dto.getStatus());
-        asset.setPurchaseDate(dto.getPurchaseDate());
-        asset.setPurchaseValue(dto.getPurchaseValue());
-        asset.setLocation(dto.getLocation());
-        asset.setDescription(dto.getDescription());
+        asset.setName(dto.name());
+        asset.setSerialNumber(dto.serialNumber());
+        asset.setCategory(dto.category());
+        asset.setStatus(dto.status());
+        asset.setPurchaseDate(dto.purchaseDate());
+        asset.setPurchaseValue(dto.purchaseValue());
+        asset.setLocation(dto.location());
+        asset.setDescription(dto.description());
     }
 }
