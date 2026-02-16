@@ -10,53 +10,32 @@ Sistema web para gerenciamento de ativos empresariais (computadores, monitores, 
 ![Test Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen)
 ![Tests](https://img.shields.io/badge/tests-17%20passing-success)
 
-## Funcionalidades
+## Como Executar (1 comando)
 
-- CRUD completo de ativos
-- Filtros por categoria, status e busca textual
-- Validações frontend (Zod) e backend (Bean Validation)
-- Interface responsiva (desktop, tablet, mobile)
-- Feedback visual de todas operações
+### Pré-requisito
+- Docker e Docker Compose instalados
 
-## Como Executar
-
-### Com Docker Compose (Recomendado)
+### Executar o Projeto
 
 ```bash
-git clone <seu-repositorio>
-cd asset-management-system
 docker-compose up --build
 ```
 
-Acesse:
-- Frontend: http://localhost:5173
-- Backend API: http://localhost:8080/api/assets
-- PostgreSQL: localhost:5432
+**Pronto!** Aguarde ~30 segundos e acesse:
 
-### Desenvolvimento Local
+- **Frontend:** http://localhost:5173
+- **API REST:** http://localhost:8080/api/assets
+- **PostgreSQL:** localhost:5432
 
-**Backend:**
-```bash
-cd backend
-mvn spring-boot:run
-```
+Para parar: `Ctrl+C` ou `docker-compose down`
 
-**Frontend:**
-```bash
-cd frontend
-npm install
-npm run dev
-```
+## Funcionalidades
 
-**PostgreSQL:**
-```bash
-docker run --name asset-db \
-  -e POSTGRES_DB=assetdb \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -p 5432:5432 \
-  -d postgres:18-alpine
-```
+- ✅ CRUD completo de ativos
+- ✅ Filtros por categoria, status e busca textual
+- ✅ Validações frontend (Zod) e backend (Bean Validation)
+- ✅ Interface responsiva (desktop, tablet, mobile)
+- ✅ Feedback visual (loading, erros, sucesso)
 
 ## API Endpoints
 
@@ -205,6 +184,35 @@ server.port=8080
 - Valor: sem validação (opcional)
 - Localização: máximo 200 caracteres (opcional)
 - Descrição: máximo 500 caracteres (opcional)
+
+## Desenvolvimento Local
+
+Para desenvolvimento com hot reload (sem Docker):
+
+**1. PostgreSQL:**
+```bash
+docker run --name asset-db \
+  -e POSTGRES_DB=assetdb \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -p 5432:5432 \
+  -d postgres:18-alpine
+```
+
+**2. Backend (terminal 1):**
+```bash
+cd backend
+mvn spring-boot:run
+# API em: http://localhost:8080
+```
+
+**3. Frontend (terminal 2):**
+```bash
+cd frontend
+npm install
+npm run dev
+# App em: http://localhost:5173
+```
 
 ## Troubleshooting
 
