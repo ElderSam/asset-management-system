@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useDeferredValue } from 'react';
 import { Box, Typography, Button, Snackbar, Alert, CircularProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import type { Asset, AssetFilters, AssetFormData } from '../types/asset';
@@ -66,13 +66,16 @@ export default function Dashboard() {
     }
   };
 
+  // Adia atualização da busca para não bloquear a digitação
+  const deferredSearch = useDeferredValue(filters.search);
+
   // Filtra os ativos baseado nos filtros ativos
   const filteredAssets = useMemo(() => {
     return assets.filter((asset) => {
       // Filtro de busca (nome ou número de série)
-      const searchLower = filters.search.toLowerCase();
+      const searchLower = deferredSearch.toLowerCase();
       const matchesSearch =
-        filters.search === '' ||
+        deferredSearch === '' ||
         asset.name.toLowerCase().includes(searchLower) ||
         asset.serialNumber.toLowerCase().includes(searchLower);
 
@@ -85,7 +88,7 @@ export default function Dashboard() {
 
       return matchesSearch && matchesCategory && matchesStatus;
     });
-  }, [assets, filters]);
+  }, [assets, deferredSearch, filters.category, filters.status]);
 
   // Limpa todos os filtros
   const handleClearFilters = () => {
