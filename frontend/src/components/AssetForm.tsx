@@ -87,7 +87,7 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<AssetFormData>({
     resolver: zodResolver(assetSchema),
     defaultValues: {
@@ -303,9 +303,9 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
           </Stack>
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
-          <Button onClick={handleClose}>Cancelar</Button>
-          <Button type="submit" variant="contained">
-            {isEditMode ? 'Salvar' : 'Criar'}
+          <Button onClick={handleClose} disabled={isSubmitting}>Cancelar</Button>
+          <Button type="submit" variant="contained" disabled={isSubmitting}>
+            {isSubmitting ? 'Salvando...' : (isEditMode ? 'Salvar' : 'Criar')}
           </Button>
         </DialogActions>
       </form>
