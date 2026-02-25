@@ -9,7 +9,8 @@ Interface web para gerenciamento de ativos.
 - Vite
 - Material UI
 - React Hook Form + Zod (validação)
-- Axios
+- TanStack Query (gerenciamento de estado do servidor)
+- Fetch nativo (requisições HTTP)
 
 ## Como Rodar
 

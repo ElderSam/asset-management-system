@@ -96,7 +96,8 @@ npm run test
 - React 19, TypeScript, Vite
 - Material UI (componentes)
 - React Hook Form + Zod (validação)
-- Axios (HTTP client)
+- TanStack Query (gerenciamento de estado do servidor)
+- Fetch nativo (requisições HTTP)
 
 **Backend:**
 - Java 21 LTS

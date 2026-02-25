@@ -1,5 +1,6 @@
-import { useState, useMemo, useEffect, useDeferredValue } from 'react';
-import { Box, Typography, Button, Snackbar, Alert, CircularProgress } from '@mui/material';
+import { useState, useMemo, useDeferredValue } from 'react';
+import { useSuspenseQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Box, Typography, Button, Snackbar, Alert } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import type { Asset, AssetFilters, AssetFormData } from '../types/asset';
 import AssetFiltersComponent from '../components/AssetFilters';
@@ -13,10 +14,48 @@ import styles from './Dashboard.module.css';
  * Página principal - Dashboard de ativos
  */
 export default function Dashboard() {
-  // Estado dos ativos
-  const [assets, setAssets] = useState<Asset[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState(false);
+  const queryClient = useQueryClient();
+
+  // Busca ativos (Suspense em App.tsx exibe o loading enquanto carrega)
+  const { data: assets } = useSuspenseQuery({
+    queryKey: ['assets'],
+    queryFn: () => assetService.getAssets(),
+  });
+
+  // Mutations
+  const createMutation = useMutation({
+    mutationFn: assetService.createAsset,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['assets'] });
+      setSnackbar({ open: true, message: 'Ativo criado com sucesso!', severity: 'success' });
+      setIsFormOpen(false);
+      setEditingAsset(undefined);
+    },
+    onError: () => setSnackbar({ open: true, message: 'Erro ao criar ativo', severity: 'error' }),
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: AssetFormData }) =>
+      assetService.updateAsset(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['assets'] });
+      setSnackbar({ open: true, message: 'Ativo atualizado com sucesso!', severity: 'success' });
+      setIsFormOpen(false);
+      setEditingAsset(undefined);
+    },
+    onError: () => setSnackbar({ open: true, message: 'Erro ao atualizar ativo', severity: 'error' }),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: assetService.deleteAsset,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['assets'] });
+      setSnackbar({ open: true, message: 'Ativo excluído com sucesso!', severity: 'success' });
+    },
+    onError: () => setSnackbar({ open: true, message: 'Erro ao excluir ativo', severity: 'error' }),
+  });
+
+  const isMutating = createMutation.isPending || updateMutation.isPending || deleteMutation.isPending;
 
   // Estado dos filtros
   const [filters, setFilters] = useState<AssetFilters>({
@@ -43,28 +82,6 @@ export default function Dashboard() {
     message: '',
     severity: 'success',
   });
-
-  // Carrega ativos ao montar o componente
-  useEffect(() => {
-    loadAssets();
-  }, []);
-
-  // Carrega todos os ativos
-  const loadAssets = async () => {
-    try {
-      setLoading(true);
-      const data = await assetService.getAssets();
-      setAssets(data);
-    } catch (error) {
-      setSnackbar({
-        open: true,
-        message: 'Erro ao carregar ativos',
-        severity: 'error',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Adia atualização da busca para não bloquear a digitação
   const deferredSearch = useDeferredValue(filters.search);
@@ -111,43 +128,12 @@ export default function Dashboard() {
     setIsFormOpen(true);
   };
 
-  // Submete formulário (criar ou editar)
-  const handleFormSubmit = async (data: AssetFormData) => {
-    try {
-      setActionLoading(true);
-      
-      if (editingAsset) {
-        // Editar ativo existente
-        const updatedAsset = await assetService.updateAsset(editingAsset.id, data);
-        setAssets((prev) =>
-          prev.map((asset) => (asset.id === updatedAsset.id ? updatedAsset : asset))
-        );
-        setSnackbar({
-          open: true,
-          message: 'Ativo atualizado com sucesso!',
-          severity: 'success',
-        });
-      } else {
-        // Criar novo ativo
-        const newAsset = await assetService.createAsset(data);
-        setAssets((prev) => [newAsset, ...prev]);
-        setSnackbar({
-          open: true,
-          message: 'Ativo criado com sucesso!',
-          severity: 'success',
-        });
-      }
-      
-      setIsFormOpen(false);
-      setEditingAsset(undefined);
-    } catch (error) {
-      setSnackbar({
-        open: true,
-        message: 'Erro ao salvar ativo',
-        severity: 'error',
-      });
-    } finally {
-      setActionLoading(false);
+  // Submete formulário (criar ou editar) via mutation
+  const handleFormSubmit = (data: AssetFormData) => {
+    if (editingAsset) {
+      updateMutation.mutate({ id: editingAsset.id, data });
+    } else {
+      createMutation.mutate(data);
     }
   };
 
@@ -157,27 +143,10 @@ export default function Dashboard() {
     setDeleteDialogOpen(true);
   };
 
-  // Confirma exclusão
-  const handleConfirmDelete = async () => {
+  // Confirma exclusão via mutation
+  const handleConfirmDelete = () => {
     if (assetToDelete) {
-      try {
-        setActionLoading(true);
-        await assetService.deleteAsset(assetToDelete);
-        setAssets((prev) => prev.filter((asset) => asset.id !== assetToDelete));
-        setSnackbar({
-          open: true,
-          message: 'Ativo excluído com sucesso!',
-          severity: 'success',
-        });
-      } catch (error) {
-        setSnackbar({
-          open: true,
-          message: 'Erro ao excluir ativo',
-          severity: 'error',
-        });
-      } finally {
-        setActionLoading(false);
-      }
+      deleteMutation.mutate(assetToDelete);
     }
     setDeleteDialogOpen(false);
     setAssetToDelete(null);
@@ -207,7 +176,7 @@ export default function Dashboard() {
             startIcon={<AddIcon />}
             onClick={handleCreateAsset}
             size="large"
-            disabled={loading || actionLoading}
+            disabled={isMutating}
           >
             Novo Ativo
           </Button>
@@ -221,19 +190,12 @@ export default function Dashboard() {
         onClearFilters={handleClearFilters}
       />
 
-      {/* Loading */}
-      {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
-          <CircularProgress />
-        </Box>
-      ) : (
-        /* Tabela de ativos */
-        <AssetTable
-          assets={filteredAssets}
-          onEdit={handleEditAsset}
-          onDelete={handleDeleteAsset}
-        />
-      )}
+      {/* Tabela de ativos (loading inicial tratado pelo Suspense em App.tsx) */}
+      <AssetTable
+        assets={filteredAssets}
+        onEdit={handleEditAsset}
+        onDelete={handleDeleteAsset}
+      />
 
       {/* Formulário de criar/editar */}
       <AssetForm
