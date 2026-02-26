@@ -27,6 +27,11 @@ docker-compose up --build
 - **API REST:** http://localhost:8080/api/assets
 - **PostgreSQL:** localhost:5432
 
+**Acessar banco via terminal:**
+```bash
+docker-compose exec database psql -U postgres -d assetdb
+```
+
 Para parar: `Ctrl+C` ou `docker-compose down`
 
 ## Funcionalidades
