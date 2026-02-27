@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
  * Implementação do serviço de Asset
  */
 @Service
-@Transactional
 public class AssetServiceImpl implements AssetService {
 
     private final AssetRepository repository;
@@ -32,7 +31,6 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<AssetDTO> findAll(String search, AssetCategory category, AssetStatus status) {
         Specification<Asset> spec = buildSpecification(search, category, status);
         
@@ -43,7 +41,6 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public AssetDTO findById(Long id) {
         Asset asset = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset", "id", id));
@@ -52,6 +49,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
+    @Transactional
     public AssetDTO create(AssetRequestDTO dto) {
         // Validar se serialNumber já existe
         if (repository.existsBySerialNumber(dto.serialNumber())) {
@@ -65,6 +63,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
+    @Transactional
     public AssetDTO update(Long id, AssetRequestDTO dto) {
         Asset asset = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset", "id", id));
@@ -84,6 +83,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("Asset", "id", id);
