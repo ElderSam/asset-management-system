@@ -26,10 +26,6 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * Testes de integração para AssetController
- * Testa todos os endpoints CRUD com cenários de sucesso e erro
- */
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
@@ -47,14 +43,11 @@ class AssetControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        // Configura MockMvc manualmente
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         
-        // Cria ObjectMapper com suporte a Java 8 Time API
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         
-        // Limpa o repositório antes de cada teste
         assetRepository.deleteAll();
     }
 

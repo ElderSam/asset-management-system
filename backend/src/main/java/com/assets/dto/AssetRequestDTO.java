@@ -7,10 +7,6 @@ import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * DTO para requisições (POST/PUT) - sem id, createdAt, updatedAt
- * Record imutável com validações Bean Validation
- */
 public record AssetRequestDTO(
         @NotBlank(message = "Name is required")
         @Size(min = 3, max = 100, message = "Name must be between 3 and 100 characters")

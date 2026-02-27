@@ -3,14 +3,8 @@ package com.assets.dto;
 import com.assets.model.Asset;
 import java.math.BigDecimal;
 
-/**
- * Mapper para conversão entre Entity (Asset) e DTOs (Records)
- */
 public class AssetMapper {
 
-    /**
-     * Converte Entity para DTO Record (response)
-     */
     public static AssetDTO toDTO(Asset asset) {
         if (asset == null) {
             return null;
@@ -31,9 +25,6 @@ public class AssetMapper {
         );
     }
 
-    /**
-     * Converte RequestDTO Record para Entity (para criação)
-     */
     public static Asset toEntity(AssetRequestDTO dto) {
         if (dto == null) {
             return null;
@@ -52,9 +43,6 @@ public class AssetMapper {
         return asset;
     }
 
-    /**
-     * Atualiza Entity existente com dados do RequestDTO Record (para update)
-     */
     public static void updateEntity(Asset asset, AssetRequestDTO dto) {
         if (asset == null || dto == null) {
             return;

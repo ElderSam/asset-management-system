@@ -7,10 +7,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * DTO para resposta (GET) - representa um Asset completo
- * Record imutável com todos os campos
- */
 public record AssetDTO(
         Long id,
         String name,

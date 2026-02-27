@@ -1,8 +1,5 @@
 package com.assets.exception;
 
-/**
- * Exception lançada quando um recurso não é encontrado
- */
 public class ResourceNotFoundException extends RuntimeException {
 
     public ResourceNotFoundException(String message) {

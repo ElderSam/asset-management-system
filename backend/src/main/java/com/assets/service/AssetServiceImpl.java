@@ -18,9 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Implementação do serviço de Asset
- */
 @Service
 public class AssetServiceImpl implements AssetService {
 
@@ -92,9 +89,6 @@ public class AssetServiceImpl implements AssetService {
         repository.deleteById(id);
     }
 
-    /**
-     * Constrói Specification dinâmica baseada nos filtros
-     */
     private Specification<Asset> buildSpecification(String search, AssetCategory category, AssetStatus status) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();

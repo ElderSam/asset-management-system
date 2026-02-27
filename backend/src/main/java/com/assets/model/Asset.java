@@ -13,9 +13,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * Entidade que representa um ativo da empresa
- */
 @Entity
 @Table(name = "assets")
 @Getter
