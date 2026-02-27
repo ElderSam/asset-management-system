@@ -259,8 +259,8 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
                     fullWidth
                     inputProps={{ step: '0.01', min: '0' }}
                     onChange={(e) => {
-                      const value = e.target.value;
-                      field.onChange(value === '' ? 0 : parseFloat(value));
+                      const value = parseFloat(e.target.value);
+                      field.onChange(value);
                     }}
                     error={!!errors.purchaseValue}
                     helperText={errors.purchaseValue?.message}
