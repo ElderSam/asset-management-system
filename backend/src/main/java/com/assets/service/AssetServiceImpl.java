@@ -99,12 +99,9 @@ public class AssetServiceImpl implements AssetService {
     }
 
     private void validateSerialNumberNotDuplicated(Long currentAssetId, String serialNumber) {
-        repository.findBySerialNumber(serialNumber)
-                .ifPresent(existingAsset -> {
-                    if (!existingAsset.getId().equals(currentAssetId)) {
-                        throw new DuplicateResourceException("Asset", "serialNumber", serialNumber);
-                    }
-                });
+        if (repository.existsBySerialNumberAndIdNot(serialNumber, currentAssetId)) {
+            throw new DuplicateResourceException("Asset", "serialNumber", serialNumber);
+        }
     }
 
     private void addSearchFilter(List<Predicate> predicates, 
