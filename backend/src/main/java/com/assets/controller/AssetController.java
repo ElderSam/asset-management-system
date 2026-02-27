@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/assets")
-@CrossOrigin(origins = "*")
 public class AssetController {
 
     private final AssetService service;
