@@ -48,10 +48,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     @Transactional
     public AssetDTO create(AssetRequestDTO dto) {
-        // Validar se serialNumber já existe
-        if (repository.existsBySerialNumber(dto.serialNumber())) {
-            throw new DuplicateResourceException("Asset", "serialNumber", dto.serialNumber());
-        }
+        validateSerialNumberNotExists(dto.serialNumber());
 
         Asset asset = AssetMapper.toEntity(dto);
         Asset savedAsset = repository.save(asset);
@@ -65,13 +62,7 @@ public class AssetServiceImpl implements AssetService {
         Asset asset = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset", "id", id));
 
-        // Validar se serialNumber já existe em outro ativo
-        repository.findBySerialNumber(dto.serialNumber())
-                .ifPresent(existingAsset -> {
-                    if (!existingAsset.getId().equals(id)) {
-                        throw new DuplicateResourceException("Asset", "serialNumber", dto.serialNumber());
-                    }
-                });
+        validateSerialNumberNotDuplicated(id, dto.serialNumber());
 
         AssetMapper.updateEntity(asset, dto);
         Asset updatedAsset = repository.save(asset);
@@ -93,31 +84,62 @@ public class AssetServiceImpl implements AssetService {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            // Filtro de busca por nome OU serialNumber
-            if (search != null && !search.trim().isEmpty()) {
-                String searchPattern = "%" + search.toLowerCase() + "%";
-                Predicate namePredicate = criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("name")), 
-                        searchPattern
-                );
-                Predicate serialPredicate = criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("serialNumber")), 
-                        searchPattern
-                );
-                predicates.add(criteriaBuilder.or(namePredicate, serialPredicate));
-            }
-
-            // Filtro por categoria
-            if (category != null) {
-                predicates.add(criteriaBuilder.equal(root.get("category"), category));
-            }
-
-            // Filtro por status
-            if (status != null) {
-                predicates.add(criteriaBuilder.equal(root.get("status"), status));
-            }
+            addSearchFilter(predicates, root, criteriaBuilder, search);
+            addCategoryFilter(predicates, root, criteriaBuilder, category);
+            addStatusFilter(predicates, root, criteriaBuilder, status);
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
+    }
+
+    private void validateSerialNumberNotExists(String serialNumber) {
+        if (repository.existsBySerialNumber(serialNumber)) {
+            throw new DuplicateResourceException("Asset", "serialNumber", serialNumber);
+        }
+    }
+
+    private void validateSerialNumberNotDuplicated(Long currentAssetId, String serialNumber) {
+        repository.findBySerialNumber(serialNumber)
+                .ifPresent(existingAsset -> {
+                    if (!existingAsset.getId().equals(currentAssetId)) {
+                        throw new DuplicateResourceException("Asset", "serialNumber", serialNumber);
+                    }
+                });
+    }
+
+    private void addSearchFilter(List<Predicate> predicates, 
+                                  jakarta.persistence.criteria.Root<Asset> root,
+                                  jakarta.persistence.criteria.CriteriaBuilder criteriaBuilder, 
+                                  String search) {
+        if (search != null && !search.trim().isEmpty()) {
+            String searchPattern = "%" + search.toLowerCase() + "%";
+            Predicate namePredicate = criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get("name")), 
+                    searchPattern
+            );
+            Predicate serialPredicate = criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get("serialNumber")), 
+                    searchPattern
+            );
+            predicates.add(criteriaBuilder.or(namePredicate, serialPredicate));
+        }
+    }
+
+    private void addCategoryFilter(List<Predicate> predicates, 
+                                    jakarta.persistence.criteria.Root<Asset> root,
+                                    jakarta.persistence.criteria.CriteriaBuilder criteriaBuilder, 
+                                    AssetCategory category) {
+        if (category != null) {
+            predicates.add(criteriaBuilder.equal(root.get("category"), category));
+        }
+    }
+
+    private void addStatusFilter(List<Predicate> predicates, 
+                                  jakarta.persistence.criteria.Root<Asset> root,
+                                  jakarta.persistence.criteria.CriteriaBuilder criteriaBuilder, 
+                                  AssetStatus status) {
+        if (status != null) {
+            predicates.add(criteriaBuilder.equal(root.get("status"), status));
+        }
     }
 }
