@@ -25,6 +25,7 @@ docker-compose up --build
 
 - **Frontend:** http://localhost:5173
 - **API REST:** http://localhost:8080/api/assets
+- **Swagger UI:** http://localhost:8080/swagger-ui.html
 - **PostgreSQL:** localhost:5432
 
 **Acessar banco via terminal:**
