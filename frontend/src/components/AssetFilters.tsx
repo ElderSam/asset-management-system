@@ -17,9 +17,6 @@ interface AssetFiltersProps {
   onClearFilters: () => void;
 }
 
-/**
- * Barra de filtros para a tabela de ativos
- */
 export default function AssetFilters({
   filters,
   onFilterChange,

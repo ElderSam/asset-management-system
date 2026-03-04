@@ -15,9 +15,6 @@ interface ConfirmDialogProps {
   onCancel: () => void;
 }
 
-/**
- * Dialog de confirmação reutilizável
- */
 export default function ConfirmDialog({
   open,
   title,

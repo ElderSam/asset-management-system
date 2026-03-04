@@ -6,15 +6,9 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-/**
- * Layout principal da aplicação
- * - AppBar com título
- * - Container responsivo para o conteúdo
- */
 export default function Layout({ children }: LayoutProps) {
   return (
     <div className={styles.layout}>
-      {/* AppBar */}
       <AppBar position="static">
         <Toolbar className={styles.toolbar}>
           <BusinessCenterIcon className={styles.logo} />
@@ -24,12 +18,10 @@ export default function Layout({ children }: LayoutProps) {
         </Toolbar>
       </AppBar>
 
-      {/* Conteúdo principal */}
       <Container maxWidth="xl" className={styles.container}>
         {children}
       </Container>
 
-      {/* Footer */}
       <footer className={styles.footer}>
         <Container maxWidth="xl">
           <Typography variant="body2" color="text.secondary" align="center">

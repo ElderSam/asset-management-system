@@ -19,12 +19,9 @@ interface AssetFormProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (data: AssetFormData) => void;
-  asset?: Asset; // Se fornecido, é modo edição
+  asset?: Asset;
 }
 
-/**
- * Schema de validação com Zod
- */
 const assetSchema = z.object({
   name: z
     .string()
@@ -77,9 +74,6 @@ const assetSchema = z.object({
     .optional(),
 });
 
-/**
- * Componente de formulário para criar/editar ativos
- */
 export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormProps) {
   const isEditMode = !!asset;
 
@@ -93,7 +87,7 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
     defaultValues: {
       name: '',
       serialNumber: '',
-      category: '' as any,
+      category: '' as any, 
       status: AssetStatus.ACTIVE,
       purchaseDate: new Date().toISOString().split('T')[0],
       purchaseValue: 0,
@@ -102,11 +96,9 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
     },
   });
 
-  // Atualiza os valores do formulário quando o asset muda (modo edição)
   useEffect(() => {
     if (open) {
       if (asset) {
-        // Modo edição: preenche com dados do ativo
         reset({
           name: asset.name,
           serialNumber: asset.serialNumber,
@@ -118,11 +110,10 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
           description: asset.description || '',
         });
       } else {
-        // Modo criação: limpa o formulário
         reset({
           name: '',
           serialNumber: '',
-          category: '' as any,
+          category: '' as any, 
           status: AssetStatus.ACTIVE,
           purchaseDate: new Date().toISOString().split('T')[0],
           purchaseValue: 0,
@@ -147,7 +138,6 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         <DialogContent>
           <Stack spacing={2} sx={{ mt: 1 }}>
-            {/* Nome */}
             <Controller
               name="name"
               control={control}
@@ -163,7 +153,6 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
               )}
             />
 
-            {/* Número de Série */}
             <Controller
               name="serialNumber"
               control={control}
@@ -179,7 +168,6 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
               )}
             />
 
-            {/* Categoria e Status */}
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <Controller
                 name="category"
@@ -229,7 +217,6 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
               />
             </Stack>
 
-            {/* Data de Compra e Valor */}
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <Controller
                 name="purchaseDate"
@@ -269,7 +256,6 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
               />
             </Stack>
 
-            {/* Localização */}
             <Controller
               name="location"
               control={control}
@@ -284,7 +270,6 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
               )}
             />
 
-            {/* Descrição */}
             <Controller
               name="description"
               control={control}

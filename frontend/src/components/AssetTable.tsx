@@ -22,9 +22,6 @@ interface AssetTableProps {
   onDelete: (id: number) => void;
 }
 
-/**
- * Retorna a cor do badge de status
- */
 const getStatusColor = (status: AssetStatus): 'success' | 'error' | 'warning' | 'info' => {
   switch (status) {
     case AssetStatusEnum.ACTIVE:
@@ -40,9 +37,6 @@ const getStatusColor = (status: AssetStatus): 'success' | 'error' | 'warning' | 
   }
 };
 
-/**
- * Retorna o label traduzido do status
- */
 const getStatusLabel = (status: AssetStatus): string => {
   switch (status) {
     case AssetStatusEnum.ACTIVE:
@@ -58,9 +52,6 @@ const getStatusLabel = (status: AssetStatus): string => {
   }
 };
 
-/**
- * Retorna o label traduzido da categoria
- */
 const getCategoryLabel = (category: AssetCategory): string => {
   switch (category) {
     case AssetCategoryEnum.COMPUTER:
@@ -80,9 +71,6 @@ const getCategoryLabel = (category: AssetCategory): string => {
   }
 };
 
-/**
- * Formata valor monetário para BRL
- */
 const formatCurrency = (value: number): string => {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -90,19 +78,12 @@ const formatCurrency = (value: number): string => {
   }).format(value);
 };
 
-/**
- * Formata data para pt-BR
- * Usa parsing local para evitar problemas de timezone
- */
 const formatDate = (dateString: string): string => {
   const [year, month, day] = dateString.split('-');
   const date = new Date(Number(year), Number(month) - 1, Number(day));
   return date.toLocaleDateString('pt-BR');
 };
 
-/**
- * Tabela de ativos com formatação e ações
- */
 export default function AssetTable({ assets, onEdit, onDelete }: AssetTableProps) {
   if (assets.length === 0) {
     return (
