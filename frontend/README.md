@@ -1,70 +1,26 @@
 # Frontend - Asset Management
 
-Interface web para gerenciamento de ativos.
+Interface web para gerenciamento de ativos empresariais.
 
 ## Stack
 
-- React 19
-- TypeScript
-- Vite
-- Material UI
-- React Hook Form + Zod (validação)
-- TanStack Query (gerenciamento de estado do servidor)
+- React 19, TypeScript, Vite
+- Material UI (componentes de UI)
+- React Hook Form + Zod (validação de formulários)
+- TanStack Query (cache e estado de servidor)
 - Fetch nativo (requisições HTTP)
 
 ## Como Rodar
 
 ```bash
-# Instalar dependências
 npm install
-
-# Desenvolvimento
 npm run dev
-# Acesse: http://localhost:5173
-
-# Build produção
-npm run build
-npm run preview
+# http://localhost:5173
 ```
-
-## Com Docker
-
-```bash
-docker build -t asset-frontend .
-docker run -d -p 8080:80 asset-frontend
-# Acesse: http://localhost:8080
-```
-
-## Estrutura
-
-```
-src/
-├── components/     # Componentes reutilizáveis
-│   ├── AssetTable.tsx
-│   ├── AssetFilters.tsx
-│   ├── AssetForm.tsx
-│   └── ConfirmDialog.tsx
-├── pages/         # Páginas
-│   └── Dashboard.tsx
-├── services/      # API calls
-│   └── assetService.ts
-├── types/         # TypeScript types
-│   └── asset.ts
-└── theme/         # Tema MUI
-    └── theme.ts
-```
-
-## Funcionalidades
-
-- CRUD completo de ativos
-- Filtros (busca, categoria, status)
-- Validação com React Hook Form + Zod
-- Feedback visual (loading, erros, sucesso)
-- Interface responsiva
 
 ## Configuração
 
-Criar arquivo `.env`:
+Criar arquivo `.env` na raiz do frontend:
 
 ```env
 VITE_API_URL=http://localhost:8080
@@ -73,8 +29,49 @@ VITE_API_URL=http://localhost:8080
 ## Scripts
 
 ```bash
-npm run dev        # Desenvolvimento
-npm run build      # Build produção
-npm run preview    # Preview build
-npm run lint       # ESLint
+npm run dev      # Servidor de desenvolvimento
+npm run build    # Build para produção
+npm run preview  # Preview do build
+npm run lint     # ESLint
+```
+
+## Estrutura
+
+```
+src/
+├── components/
+│   ├── AssetTable.tsx       # Tabela com paginação
+│   ├── AssetFilters.tsx     # Filtros de busca
+│   ├── AssetForm.tsx        # Formulário criação/edição
+│   ├── ConfirmDialog.tsx    # Diálogo de confirmação
+│   └── Layout.tsx           # Layout base
+├── pages/
+│   └── Dashboard.tsx        # Página principal
+├── services/
+│   └── assetService.ts      # Chamadas à API
+├── types/
+│   └── asset.ts             # Tipos TypeScript
+└── theme/
+    └── theme.ts             # Tema Material UI
+```
+
+## Validações (Zod)
+
+| Campo | Regra |
+|-------|-------|
+| name | Obrigatório, 3-100 caracteres |
+| serialNumber | Obrigatório, 3-50 caracteres |
+| category | Obrigatório |
+| status | Obrigatório |
+| purchaseDate | Obrigatório, formato válido |
+| purchaseValue | Opcional, >= 0, máx 999.999.999 |
+| location | Opcional, máx 200 caracteres |
+| description | Opcional, máx 500 caracteres |
+
+## Docker
+
+```bash
+docker build -t asset-frontend .
+docker run -p 80:80 asset-frontend
+# http://localhost:80
 ```

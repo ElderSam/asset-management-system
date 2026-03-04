@@ -12,28 +12,26 @@ Sistema web para gerenciamento de ativos empresariais (computadores, monitores, 
 
 ## Como Executar (1 comando)
 
-### Pré-requisito
-- Docker e Docker Compose instalados
-
-### Executar o Projeto
+**Pré-requisito:** Docker e Docker Compose instalados
 
 ```bash
 docker-compose up --build
 ```
 
-**Pronto!** Aguarde ~30 segundos e acesse:
+Aguarde ~30 segundos e acesse:
 
 - **Frontend:** http://localhost:5173
 - **API REST:** http://localhost:8080/api/assets
 - **Swagger UI:** http://localhost:8080/swagger-ui.html
 - **PostgreSQL:** localhost:5432
 
-**Acessar banco via terminal:**
 ```bash
+# Acessar banco
 docker-compose exec database psql -U postgres -d assetdb
-```
 
-Para parar: `Ctrl+C` ou `docker-compose down`
+# Parar
+docker-compose down
+```
 
 ## Funcionalidades
 
@@ -43,130 +41,15 @@ Para parar: `Ctrl+C` ou `docker-compose down`
 - ✅ Validações frontend (Zod) e backend (Bean Validation)
 - ✅ Interface responsiva (desktop, tablet, mobile)
 - ✅ Feedback visual (loading, erros, sucesso)
-
-## API Endpoints
-
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/api/assets` | Lista ativos (paginado) |
-| GET | `/api/assets?page=0&size=10` | Lista com paginação customizada |
-| GET | `/api/assets?search=<termo>` | Busca por nome ou serial |
-| GET | `/api/assets?category=<cat>` | Filtra por categoria |
-| GET | `/api/assets?status=<status>` | Filtra por status |
-| GET | `/api/assets/{id}` | Busca por ID |
-| POST | `/api/assets` | Cria novo ativo |
-| PUT | `/api/assets/{id}` | Atualiza ativo |
-| DELETE | `/api/assets/{id}` | Remove ativo |
-
-**Categorias:** `COMPUTER`, `MONITOR`, `PERIPHERAL`, `NETWORK`, `FURNITURE`, `OTHER`  
-**Status:** `ACTIVE`, `INACTIVE`, `MAINTENANCE`, `DISPOSED`
-
-**Paginação:** Retorno inclui `content`, `totalElements`, `totalPages`, `size`, `number`
-
-Detalhes completos dos endpoints em [backend/README.md](backend/README.md)
-
-### Exemplo de Request (POST/PUT)
-
-```json
-{
-  "name": "Dell XPS 15",
-  "serialNumber": "DXP-2024-001",
-  "category": "COMPUTER",
-  "status": "ACTIVE",
-  "purchaseDate": "2024-01-15",
-  "purchaseValue": 3500.00,
-  "location": "São Paulo - Sala 301",
-  "description": "Notebook para desenvolvimento"
-}
-```
-
-## Testes
-
-### Backend (31 testes, 93% cobertura)
-
-```bash
-cd backend
-mvn test
-```
-
-- **18 testes de integração** (Spring Boot Test + MockMvc + H2)
-- **12 testes unitários** (Mockito + AssertJ) 
-- **1 teste de contexto** (inicialização da aplicação)
-- **Cobertura:** 93% instruções, 73% branches
-
-Detalhes completos em [backend/README.md](backend/README.md)
-
-### Frontend
-
-```bash
-cd frontend
-npm run test
-```
-
-## Tecnologias
-
-**Frontend:** 
-- React 19, TypeScript, Vite
-- Material UI (componentes)
-- React Hook Form + Zod (validação)
-- TanStack Query (gerenciamento de estado do servidor)
-- Fetch nativo (requisições HTTP)
-
-**Backend:**
-- Java 21 LTS
-- Spring Boot 4.0.2 (Web, Data JPA, Validation)
-- PostgreSQL 18
-- Lombok
-- JUnit 5 + Mockito + MockMvc + H2 (testes)
-- JaCoCo (cobertura de código)
-
-**DevOps:**
-- Docker + Docker Compose
-- Multi-stage builds (otimização)
+- ✅ Documentação interativa via Swagger
 
 ## Estrutura do Projeto
 
 ```
 asset-management-system/
-├── backend/              # API Spring Boot
-│   ├── src/
-│   │   ├── main/java/com/assets/
-│   │   │   ├── controller/
-│   │   │   ├── dto/
-│   │   │   ├── exception/
-│   │   │   ├── model/
-│   │   │   ├── repository/
-│   │   │   └── service/
-│   │   └── test/
-│   ├── Dockerfile
-│   └── pom.xml
-├── frontend/             # React App
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   └── types/
-│   ├── Dockerfile
-│   └── package.json
+├── backend/              # API Spring Boot → backend/README.md
+├── frontend/             # React App       → frontend/README.md
 └── docker-compose.yml
-```
-
-## Configuração
-
-### Variáveis de Ambiente
-
-**Frontend (.env):**
-```env
-VITE_API_URL=http://localhost:8080
-```
-
-**Backend (application.properties):**
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/assetdb
-spring.datasource.username=postgres
-spring.datasource.password=postgres
-spring.jpa.hibernate.ddl-auto=update
-server.port=8080
 ```
 
 ## Decisões Técnicas
@@ -177,17 +60,11 @@ server.port=8080
 
 **PostgreSQL:** Banco relacional robusto, open-source, compatível com serviços de deploy gratuitos.
 
-**Java 21 LTS:** Versão estável com suporte de longo prazo. Java 25 ainda não tem compatibilidade completa com Maven plugins.
+**Java 21 LTS:** Versão estável com suporte de longo prazo.
 
-**Testes de Integração:** Testam fluxo completo (controller → service → repository → database) fornecendo maior confiança.
+**Testes de Integração + Unitários:** Integração testa fluxo completo (controller → service → repository → database); unitários testam lógica de negócio isoladamente com Mockito.
 
-## Validações
-
-**Frontend (Zod):** Nome (3-100 chars), Serial (3-50 chars), Data de compra (obrigatória), Valor (>= 0)
-
-**Backend (Bean Validation):** Nome, Serial (único), Data de compra (@PastOrPresent), validações de tamanho
-
-Detalhes completos em [backend/README.md](backend/README.md)
+**Swagger/OpenAPI (code-first):** springdoc infere automaticamente tipos, validações e códigos HTTP — anotações manuais apenas para o que não é inferível (404, 409).
 
 ## Desenvolvimento Local
 
@@ -203,34 +80,25 @@ docker run --name asset-db \
   -d postgres:18-alpine
 ```
 
-**2. Backend (terminal 1):**
+**2. Backend (terminal 1):** ver [backend/README.md](backend/README.md)
 ```bash
-cd backend
-mvn spring-boot:run
-# API em: http://localhost:8080
+cd backend && mvn spring-boot:run
 ```
 
-**3. Frontend (terminal 2):**
+**3. Frontend (terminal 2):** ver [frontend/README.md](frontend/README.md)
 ```bash
-cd frontend
-npm install
-npm run dev
-# App em: http://localhost:5173
+cd frontend && npm install && npm run dev
 ```
 
 ## Troubleshooting
 
 **Porta em uso:**
 ```bash
-# Backend (porta 8080)
-lsof -ti:8080 | xargs kill -9
-
-# Frontend (porta 5173)
-lsof -ti:5173 | xargs kill -9
+lsof -ti:8080 | xargs kill -9  # Backend
+lsof -ti:5173 | xargs kill -9  # Frontend
 ```
 
 **Docker: banco não conecta:**
 ```bash
-docker-compose down -v  # Remove volumes
-docker-compose up --build
+docker-compose down -v && docker-compose up --build
 ```
