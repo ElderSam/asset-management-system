@@ -7,8 +7,8 @@ Sistema web para gerenciamento de ativos empresariais (computadores, monitores, 
 ![Java](https://img.shields.io/badge/Java-21-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.2-green)
 ![React](https://img.shields.io/badge/React-19-blue)
-![Test Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen)
-![Tests](https://img.shields.io/badge/tests-17%20passing-success)
+![Test Coverage](https://img.shields.io/badge/coverage-93%25-brightgreen)
+![Tests](https://img.shields.io/badge/tests-31%20passing-success)
 
 ## Como Executar (1 comando)
 
@@ -75,18 +75,19 @@ Para parar: `Ctrl+C` ou `docker-compose down`
 
 ## Testes
 
-### Backend (17 testes, 90% cobertura)
+### Backend (31 testes, 93% cobertura)
 
 ```bash
 cd backend
 mvn test
-
-# Relatório de cobertura (JaCoCo)
-mvn clean test jacoco:report
-# Abrir: backend/target/site/jacoco/index.html
 ```
 
-**Cobertura:** 90% instruções, 86% linhas, 73% branches, 79% métodos, 100% classes
+- **18 testes de integração** (Spring Boot Test + MockMvc + H2)
+- **12 testes unitários** (Mockito + AssertJ) 
+- **1 teste de contexto** (inicialização da aplicação)
+- **Cobertura:** 93% instruções, 73% branches
+
+Detalhes completos em [backend/README.md](backend/README.md)
 
 ### Frontend
 
@@ -97,7 +98,7 @@ npm run test
 
 ## Tecnologias
 
-**Frontend:**
+**Frontend:** 
 - React 19, TypeScript, Vite
 - Material UI (componentes)
 - React Hook Form + Zod (validação)
@@ -109,7 +110,7 @@ npm run test
 - Spring Boot 4.0.2 (Web, Data JPA, Validation)
 - PostgreSQL 18
 - Lombok
-- JUnit 5 + MockMvc + H2 (testes)
+- JUnit 5 + Mockito + MockMvc + H2 (testes)
 - JaCoCo (cobertura de código)
 
 **DevOps:**
@@ -175,21 +176,11 @@ server.port=8080
 
 ## Validações
 
-**Frontend (Zod):**
-- Nome: 3-100 caracteres, obrigatório
-- Serial: 3-50 caracteres, obrigatório
-- Data de compra: obrigatória, formato válido
-- Valor: >= 0, máximo 999.999.999
-- Localização: máximo 200 caracteres (opcional)
-- Descrição: máximo 500 caracteres (opcional)
+**Frontend (Zod):** Nome (3-100 chars), Serial (3-50 chars), Data de compra (obrigatória), Valor (>= 0)
 
-**Backend (Bean Validation):**
-- Nome: 3-100 caracteres, obrigatório
-- Serial: 3-50 caracteres, obrigatório, único no banco
-- Data de compra: obrigatória, não pode ser futura
-- Valor: sem validação (opcional)
-- Localização: máximo 200 caracteres (opcional)
-- Descrição: máximo 500 caracteres (opcional)
+**Backend (Bean Validation):** Nome, Serial (único), Data de compra (@PastOrPresent), validações de tamanho
+
+Detalhes completos em [backend/README.md](backend/README.md)
 
 ## Desenvolvimento Local
 
