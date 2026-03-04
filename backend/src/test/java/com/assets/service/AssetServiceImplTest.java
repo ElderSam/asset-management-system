@@ -15,6 +15,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
@@ -69,35 +73,44 @@ class AssetServiceImplTest {
     @Test
     @DisplayName("findAll - deve retornar lista de ativos quando há dados")
     void findAll_whenAssetsExist_returnsListOfAssets() {
-        when(repository.findAll(any(Specification.class))).thenReturn(List.of(asset));
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Asset> page = new PageImpl<>(List.of(asset), pageable, 1);
+        when(repository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(page);
 
-        List<AssetDTO> result = service.findAll(null, null, null);
+        Page<AssetDTO> result = service.findAll(null, null, null, pageable);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).name()).isEqualTo("Notebook Dell");
-        verify(repository).findAll(any(Specification.class));
+        assertThat(result.getContent()).hasSize(1);
+        assertThat(result.getContent().get(0).name()).isEqualTo("Notebook Dell");
+        assertThat(result.getTotalElements()).isEqualTo(1);
+        verify(repository).findAll(any(Specification.class), any(Pageable.class));
     }
 
     @Test
     @DisplayName("findAll - deve retornar lista vazia quando não há ativos")
     void findAll_whenNoAssets_returnsEmptyList() {
-        when(repository.findAll(any(Specification.class))).thenReturn(List.of());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Asset> page = new PageImpl<>(List.of(), pageable, 0);
+        when(repository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(page);
 
-        List<AssetDTO> result = service.findAll(null, null, null);
+        Page<AssetDTO> result = service.findAll(null, null, null, pageable);
 
-        assertThat(result).isEmpty();
-        verify(repository).findAll(any(Specification.class));
+        assertThat(result.getContent()).isEmpty();
+        assertThat(result.getTotalElements()).isEqualTo(0);
+        verify(repository).findAll(any(Specification.class), any(Pageable.class));
     }
 
     @Test
     @DisplayName("findAll - deve aplicar filtros quando fornecidos")
     void findAll_withFilters_appliesFiltersCorrectly() {
-        when(repository.findAll(any(Specification.class))).thenReturn(List.of(asset));
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Asset> page = new PageImpl<>(List.of(asset), pageable, 1);
+        when(repository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(page);
 
-        List<AssetDTO> result = service.findAll("Dell", AssetCategory.COMPUTER, AssetStatus.ACTIVE);
+        Page<AssetDTO> result = service.findAll("Dell", AssetCategory.COMPUTER, AssetStatus.ACTIVE, pageable);
 
-        assertThat(result).hasSize(1);
-        verify(repository).findAll(any(Specification.class));
+        assertThat(result.getContent()).hasSize(1);
+        assertThat(result.getTotalElements()).isEqualTo(1);
+        verify(repository).findAll(any(Specification.class), any(Pageable.class));
     }
 
     @Test

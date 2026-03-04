@@ -37,6 +37,7 @@ Para parar: `Ctrl+C` ou `docker-compose down`
 ## Funcionalidades
 
 - ✅ CRUD completo de ativos
+- ✅ Paginação (10 itens por página)
 - ✅ Filtros por categoria, status e busca textual
 - ✅ Validações frontend (Zod) e backend (Bean Validation)
 - ✅ Interface responsiva (desktop, tablet, mobile)
@@ -46,7 +47,8 @@ Para parar: `Ctrl+C` ou `docker-compose down`
 
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| GET | `/api/assets` | Lista todos os ativos |
+| GET | `/api/assets` | Lista ativos (paginado) |
+| GET | `/api/assets?page=0&size=10` | Lista com paginação customizada |
 | GET | `/api/assets?search=<termo>` | Busca por nome ou serial |
 | GET | `/api/assets?category=<cat>` | Filtra por categoria |
 | GET | `/api/assets?status=<status>` | Filtra por status |
@@ -57,6 +59,10 @@ Para parar: `Ctrl+C` ou `docker-compose down`
 
 **Categorias:** `COMPUTER`, `MONITOR`, `PERIPHERAL`, `NETWORK`, `FURNITURE`, `OTHER`  
 **Status:** `ACTIVE`, `INACTIVE`, `MAINTENANCE`, `DISPOSED`
+
+**Paginação:** Retorno inclui `content`, `totalElements`, `totalPages`, `size`, `number`
+
+Detalhes completos dos endpoints em [backend/README.md](backend/README.md)
 
 ### Exemplo de Request (POST/PUT)
 

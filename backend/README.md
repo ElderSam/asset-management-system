@@ -35,10 +35,11 @@ Base URL: `/api/assets`
 
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| GET | `/api/assets` | Lista todos |
-| GET | `/api/assets?search=<termo>` | Busca por nome/serial |
-| GET | `/api/assets?category=<cat>` | Filtra por categoria |
-| GET | `/api/assets?status=<status>` | Filtra por status |
+| GET | `/api/assets` | Lista ativos (paginado, padrão: 10 itens) |
+| GET | `/api/assets?page=0&size=10` | Lista com paginação customizada |
+| GET | `/api/assets?search=<termo>` | Busca por nome/serial (com paginação) |
+| GET | `/api/assets?category=<cat>` | Filtra por categoria (com paginação) |
+| GET | `/api/assets?status=<status>` | Filtra por status (com paginação) |
 | GET | `/api/assets/{id}` | Busca por ID |
 | POST | `/api/assets` | Cria novo |
 | PUT | `/api/assets/{id}` | Atualiza |
@@ -46,6 +47,56 @@ Base URL: `/api/assets`
 
 **Categorias:** COMPUTER, MONITOR, PERIPHERAL, NETWORK, FURNITURE, OTHER  
 **Status:** ACTIVE, INACTIVE, MAINTENANCE, DISPOSED
+
+### Paginação
+
+Todos os endpoints de listagem suportam paginação via parâmetros:
+
+- `page`: Número da página (começa em 0, padrão: 0)
+- `size`: Itens por página (padrão: 10)
+
+**Exemplo de Resposta Paginada:**
+
+```json
+{
+  "content": [
+    {
+      "id": 1,
+      "name": "Dell XPS 15",
+      "serialNumber": "DXP-2024-001",
+      "category": "COMPUTER",
+      "status": "ACTIVE",
+      "purchaseDate": "2024-01-15",
+      "purchaseValue": 3500.00,
+      "location": "São Paulo - Sala 301",
+      "description": "Notebook para desenvolvimento"
+    }
+  ],
+  "totalElements": 45,
+  "totalPages": 5,
+  "size": 10,
+  "number": 0,
+  "first": true,
+  "last": false,
+  "empty": false
+}
+```
+
+**Exemplos de Uso:**
+
+```bash
+# Primeira página (padrão)
+GET /api/assets
+
+# Segunda página com 20 itens
+GET /api/assets?page=1&size=20
+
+# Busca "Dell" com paginação
+GET /api/assets?search=Dell&page=0&size=10
+
+# Filtros múltiplos + paginação
+GET /api/assets?category=COMPUTER&status=ACTIVE&page=0&size=5
+```
 
 ## Estrutura
 

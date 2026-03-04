@@ -59,7 +59,9 @@ class AssetControllerIntegrationTest {
         mockMvc.perform(get("/api/assets"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpect(jsonPath("$.content", hasSize(0)))
+                .andExpect(jsonPath("$.totalElements", is(0)))
+                .andExpect(jsonPath("$.totalPages", is(0)));
     }
 
     @Test
@@ -72,7 +74,8 @@ class AssetControllerIntegrationTest {
         // When/Then
         mockMvc.perform(get("/api/assets"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)));
+                .andExpect(jsonPath("$.content", hasSize(2)))
+                .andExpect(jsonPath("$.totalElements", is(2)));
     }
 
     @Test
@@ -85,8 +88,8 @@ class AssetControllerIntegrationTest {
         // When/Then
         mockMvc.perform(get("/api/assets").param("search", "Dell"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is("Notebook Dell")));
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].name", is("Notebook Dell")));
     }
 
     @Test
@@ -99,8 +102,8 @@ class AssetControllerIntegrationTest {
         // When/Then
         mockMvc.perform(get("/api/assets").param("search", "SN002"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].serialNumber", is("SN002")));
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].serialNumber", is("SN002")));
     }
 
     @Test
@@ -113,8 +116,8 @@ class AssetControllerIntegrationTest {
         // When/Then
         mockMvc.perform(get("/api/assets").param("category", "COMPUTER"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].category", is("COMPUTER")));
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].category", is("COMPUTER")));
     }
 
     @Test
@@ -127,8 +130,46 @@ class AssetControllerIntegrationTest {
         // When/Then
         mockMvc.perform(get("/api/assets").param("status", "MAINTENANCE"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].status", is("MAINTENANCE")));
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].status", is("MAINTENANCE")));
+    }
+
+    @Test
+    @DisplayName("GET /api/assets?page=0&size=1 - deve retornar primeira página com 1 item")
+    void getAllAssets_withPagination_returnsFirstPage() throws Exception {
+        // Given
+        createTestAsset("Notebook Dell", "SN001", AssetCategory.COMPUTER, AssetStatus.ACTIVE);
+        createTestAsset("Monitor LG", "SN002", AssetCategory.MONITOR, AssetStatus.ACTIVE);
+        createTestAsset("Mouse Logitech", "SN003", AssetCategory.PERIPHERAL, AssetStatus.ACTIVE);
+
+        // When/Then
+        mockMvc.perform(get("/api/assets")
+                        .param("page", "0")
+                        .param("size", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.totalElements", is(3)))
+                .andExpect(jsonPath("$.totalPages", is(3)))
+                .andExpect(jsonPath("$.number", is(0)))
+                .andExpect(jsonPath("$.size", is(1)));
+    }
+
+    @Test
+    @DisplayName("GET /api/assets?page=1&size=2 - deve retornar segunda página")
+    void getAllAssets_withPagination_returnsSecondPage() throws Exception {
+        // Given
+        createTestAsset("Asset 1", "SN001", AssetCategory.COMPUTER, AssetStatus.ACTIVE);
+        createTestAsset("Asset 2", "SN002", AssetCategory.COMPUTER, AssetStatus.ACTIVE);
+        createTestAsset("Asset 3", "SN003", AssetCategory.COMPUTER, AssetStatus.ACTIVE);
+
+        // When/Then
+        mockMvc.perform(get("/api/assets")
+                        .param("page", "1")
+                        .param("size", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].name", is("Asset 3")))
+                .andExpect(jsonPath("$.number", is(1)));
     }
 
     // ==================== POST /api/assets ====================
@@ -350,7 +391,7 @@ class AssetControllerIntegrationTest {
 
         // Verify
         mockMvc.perform(get("/api/assets"))
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpect(jsonPath("$.content", hasSize(0)));
     }
 
     @Test

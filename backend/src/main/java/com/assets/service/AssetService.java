@@ -4,12 +4,12 @@ import com.assets.dto.AssetDTO;
 import com.assets.dto.AssetRequestDTO;
 import com.assets.model.AssetCategory;
 import com.assets.model.AssetStatus;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface AssetService {
 
-    List<AssetDTO> findAll(String search, AssetCategory category, AssetStatus status);
+    Page<AssetDTO> findAll(String search, AssetCategory category, AssetStatus status, Pageable pageable);
 
     AssetDTO findById(Long id);
 

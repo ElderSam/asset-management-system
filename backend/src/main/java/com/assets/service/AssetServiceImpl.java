@@ -10,13 +10,14 @@ import com.assets.model.AssetCategory;
 import com.assets.model.AssetStatus;
 import com.assets.repository.AssetRepository;
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AssetServiceImpl implements AssetService {
@@ -28,13 +29,11 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public List<AssetDTO> findAll(String search, AssetCategory category, AssetStatus status) {
+    public Page<AssetDTO> findAll(String search, AssetCategory category, AssetStatus status, Pageable pageable) {
         Specification<Asset> spec = buildSpecification(search, category, status);
         
-        return repository.findAll(spec)
-                .stream()
-                .map(AssetMapper::toDTO)
-                .collect(Collectors.toList());
+        return repository.findAll(spec, pageable)
+                .map(AssetMapper::toDTO);
     }
 
     @Override
