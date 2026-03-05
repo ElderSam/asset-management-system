@@ -6,7 +6,8 @@
 }
 
 .headerInfo {
-  /* Container para título e subtítulo */
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
@@ -18,5 +19,6 @@
 }
 
 .headerActions {
-  /* Container para botões de ação */
+  display: flex;
+  align-items: center;
 }
