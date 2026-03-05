@@ -8,14 +8,8 @@ import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 
-const rootRoute = createRootRoute({
-  notFoundComponent: NotFound,
-});
-
-const indexRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/',
-  component: () => (
+function IndexPage() {
+  return (
     <Layout>
       <Suspense fallback={
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
@@ -25,7 +19,17 @@ const indexRoute = createRoute({
         <Dashboard />
       </Suspense>
     </Layout>
-  ),
+  );
+}
+
+const rootRoute = createRootRoute({
+  notFoundComponent: NotFound,
+});
+
+const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/',
+  component: IndexPage,
 });
 
 const routeTree = rootRoute.addChildren([indexRoute]);

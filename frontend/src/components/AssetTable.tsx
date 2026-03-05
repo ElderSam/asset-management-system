@@ -22,6 +22,75 @@ interface AssetTableProps {
   onDelete: (id: number) => void;
 }
 
+interface AssetTableRowProps {
+  asset: Asset;
+  onEdit: (asset: Asset) => void;
+  onDelete: (id: number) => void;
+}
+
+function AssetTableRow({ asset, onEdit, onDelete }: AssetTableRowProps) {
+  const handleEdit = () => onEdit(asset);
+  const handleDelete = () => onDelete(asset.id);
+
+  return (
+    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} hover>
+      <TableCell component="th" scope="row">
+        <Typography variant="body2" className={styles.assetName}>
+          {asset.name}
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="body2" className={styles.serialNumber}>
+          {asset.serialNumber}
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="body2" fontWeight={500}>
+          {getCategoryLabel(asset.category)}
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Chip
+          label={getStatusLabel(asset.status)}
+          color={getStatusColor(asset.status)}
+          size="small"
+        />
+      </TableCell>
+      <TableCell>
+        <Typography variant="body2" className={styles.location}>
+          {asset.location || '-'}
+        </Typography>
+      </TableCell>
+      <TableCell align="right">
+        <Typography variant="body2">
+          {asset.purchaseValue ? formatCurrency(asset.purchaseValue) : '-'}
+        </Typography>
+      </TableCell>
+      <TableCell>{formatDate(asset.purchaseDate)}</TableCell>
+      <TableCell className={styles.actionCell}>
+        <IconButton
+          size="small"
+          color="primary"
+          onClick={handleEdit}
+          aria-label={`Editar ${asset.name}`}
+          title="Editar"
+        >
+          <EditIcon fontSize="small" />
+        </IconButton>
+        <IconButton
+          size="small"
+          color="error"
+          onClick={handleDelete}
+          aria-label={`Excluir ${asset.name}`}
+          title="Excluir"
+        >
+          <DeleteIcon fontSize="small" />
+        </IconButton>
+      </TableCell>
+    </TableRow>
+  );
+}
+
 const getStatusColor = (status: AssetStatus): 'success' | 'error' | 'warning' | 'info' => {
   switch (status) {
     case AssetStatusEnum.ACTIVE:
@@ -115,65 +184,12 @@ export default function AssetTable({ assets, onEdit, onDelete }: AssetTableProps
         </TableHead>
         <TableBody>
           {assets.map((asset) => (
-            <TableRow
+            <AssetTableRow
               key={asset.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              hover
-            >
-              <TableCell component="th" scope="row">
-                <Typography variant="body2" className={styles.assetName}>
-                  {asset.name}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography variant="body2" className={styles.serialNumber}>
-                  {asset.serialNumber}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography variant="body2" fontWeight={500}>
-                  {getCategoryLabel(asset.category)}
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Chip
-                  label={getStatusLabel(asset.status)}
-                  color={getStatusColor(asset.status)}
-                  size="small"
-                />
-              </TableCell>
-              <TableCell>
-                <Typography variant="body2" className={styles.location}>
-                  {asset.location || '-'}
-                </Typography>
-              </TableCell>
-              <TableCell align="right">
-                <Typography variant="body2">
-                  {asset.purchaseValue ? formatCurrency(asset.purchaseValue) : '-'}
-                </Typography>
-              </TableCell>
-              <TableCell>{formatDate(asset.purchaseDate)}</TableCell>
-              <TableCell className={styles.actionCell}>
-                <IconButton
-                  size="small"
-                  color="primary"
-                  onClick={() => onEdit(asset)}
-                  aria-label={`Editar ${asset.name}`}
-                  title="Editar"
-                >
-                  <EditIcon fontSize="small" />
-                </IconButton>
-                <IconButton
-                  size="small"
-                  color="error"
-                  onClick={() => onDelete(asset.id)}
-                  aria-label={`Excluir ${asset.name}`}
-                  title="Excluir"
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </TableCell>
-            </TableRow>
+              asset={asset}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
           ))}
         </TableBody>
       </Table>

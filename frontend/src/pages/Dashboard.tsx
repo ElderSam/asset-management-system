@@ -144,6 +144,19 @@ export default function Dashboard() {
     setAssetToDelete(null);
   };
 
+  const handlePageChange = (_: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleRowsPerPageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(e.target.value, 10));
+    setPage(0);
+  };
+
+  const handleFormClose = () => setIsFormOpen(false);
+
+  const handleSnackbarClose = () => setSnackbar({ ...snackbar, open: false });
+
   return (
     <Box>
       <div className={styles.header}>
@@ -184,12 +197,9 @@ export default function Dashboard() {
         component="div"
         count={pagedAssets.totalElements}
         page={page}
-        onPageChange={(_, newPage) => setPage(newPage)}
+        onPageChange={handlePageChange}
         rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={(e) => {
-          setRowsPerPage(parseInt(e.target.value, 10));
-          setPage(0);
-        }}
+        onRowsPerPageChange={handleRowsPerPageChange}
         rowsPerPageOptions={[5, 10, 25, 50]}
         labelRowsPerPage="Itens por página:"
         labelDisplayedRows={({ from, to, count }) => `${from}–${to} de ${count}`}
@@ -197,7 +207,7 @@ export default function Dashboard() {
 
       <AssetForm
         open={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
+        onClose={handleFormClose}
         onSubmit={handleFormSubmit}
         asset={editingAsset}
       />
@@ -213,11 +223,11 @@ export default function Dashboard() {
       <Snackbar
         open={snackbar.open}
         autoHideDuration={4000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          onClose={handleSnackbarClose}
           severity={snackbar.severity}
           variant="filled"
           sx={{ width: '100%' }}
