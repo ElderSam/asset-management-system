@@ -40,13 +40,13 @@ npm run lint     # ESLint
 ```
 src/
 ├── components/
-│   ├── AssetTable.tsx       # Tabela com paginação
+│   ├── AssetTable.tsx       # Tabela de ativos
 │   ├── AssetFilters.tsx     # Filtros de busca
 │   ├── AssetForm.tsx        # Formulário criação/edição
 │   ├── ConfirmDialog.tsx    # Diálogo de confirmação
 │   └── Layout.tsx           # Layout base
 ├── pages/
-│   └── Dashboard.tsx        # Página principal
+│   └── Dashboard.tsx        # Página principal (paginação e filtros server-side)
 ├── services/
 │   └── assetService.ts      # Chamadas à API
 ├── types/

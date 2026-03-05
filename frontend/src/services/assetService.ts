@@ -1,4 +1,4 @@
-import type { Asset, AssetFormData } from '../types/asset';
+import type { Asset, AssetFormData, Page } from '../types/asset';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 const ASSETS_ENDPOINT = `${API_URL}/api/assets`;
@@ -26,27 +26,29 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json();
 }
 
-export const getAssets = async (filters?: {
+export const getAssets = async (params?: {
   search?: string;
   category?: string;
   status?: string;
-}): Promise<Asset[]> => {
-  const params = new URLSearchParams();
-  
-  if (filters?.search) params.append('search', filters.search);
-  if (filters?.category) params.append('category', filters.category);
-  if (filters?.status) params.append('status', filters.status);
-  
-  const url = params.toString() ? `${ASSETS_ENDPOINT}?${params}` : ASSETS_ENDPOINT;
-  
-  const response = await fetch(url, {
+  page?: number;
+  size?: number;
+}): Promise<Page<Asset>> => {
+  const query = new URLSearchParams();
+
+  if (params?.search) query.append('search', params.search);
+  if (params?.category) query.append('category', params.category);
+  if (params?.status) query.append('status', params.status);
+  query.append('page', String(params?.page ?? 0));
+  query.append('size', String(params?.size ?? 10));
+
+  const response = await fetch(`${ASSETS_ENDPOINT}?${query}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   });
-  
-  return handleResponse<Asset[]>(response);
+
+  return handleResponse<Page<Asset>>(response);
 };
 
 export const getAssetById = async (id: number): Promise<Asset> => {

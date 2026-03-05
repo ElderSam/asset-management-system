@@ -34,6 +34,14 @@ export interface Asset {
 
 export type AssetFormData = Omit<Asset, 'id' | 'createdAt' | 'updatedAt'>;
 
+export interface Page<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  size: number;
+}
+
 export interface AssetFilters {
   search: string;
   category: AssetCategory | 'ALL';

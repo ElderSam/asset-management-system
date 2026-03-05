@@ -1,6 +1,6 @@
-import { useState, useMemo, useDeferredValue } from 'react';
+import { useState, useDeferredValue } from 'react';
 import { useSuspenseQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Box, Typography, Button, Snackbar, Alert } from '@mui/material';
+import { Box, Typography, Button, Snackbar, Alert, TablePagination } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import type { Asset, AssetFilters, AssetFormData } from '../types/asset';
 import AssetFiltersComponent from '../components/AssetFilters';
@@ -12,11 +12,6 @@ import styles from './Dashboard.module.css';
 
 export default function Dashboard() {
   const queryClient = useQueryClient();
-
-  const { data: assets } = useSuspenseQuery({
-    queryKey: ['assets'],
-    queryFn: () => assetService.getAssets(),
-  });
 
   const createMutation = useMutation({
     mutationFn: assetService.createAsset,
@@ -58,6 +53,24 @@ export default function Dashboard() {
     status: 'ALL',
   });
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const deferredSearch = useDeferredValue(filters.search);
+
+  const { data: pagedAssets } = useSuspenseQuery({
+    queryKey: ['assets', { page, size: rowsPerPage, search: deferredSearch, category: filters.category, status: filters.status }],
+    queryFn: () => assetService.getAssets({
+      page,
+      size: rowsPerPage,
+      search: deferredSearch || undefined,
+      category: filters.category !== 'ALL' ? filters.category : undefined,
+      status: filters.status !== 'ALL' ? filters.status : undefined,
+    }),
+  });
+
+  const assets = pagedAssets.content;
+
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingAsset, setEditingAsset] = useState<Asset | undefined>(undefined);
 
@@ -74,31 +87,14 @@ export default function Dashboard() {
     severity: 'success',
   });
 
-  const deferredSearch = useDeferredValue(filters.search);
-
-  const filteredAssets = useMemo(() => {
-    return assets.filter((asset) => {
-      const searchLower = deferredSearch.toLowerCase();
-      const matchesSearch =
-        deferredSearch === '' ||
-        asset.name.toLowerCase().includes(searchLower) ||
-        asset.serialNumber.toLowerCase().includes(searchLower);
-
-      const matchesCategory =
-        filters.category === 'ALL' || asset.category === filters.category;
-
-      const matchesStatus = filters.status === 'ALL' || asset.status === filters.status;
-
-      return matchesSearch && matchesCategory && matchesStatus;
-    });
-  }, [assets, deferredSearch, filters.category, filters.status]);
-
   const handleClearFilters = () => {
-    setFilters({
-      search: '',
-      category: 'ALL',
-      status: 'ALL',
-    });
+    setFilters({ search: '', category: 'ALL', status: 'ALL' });
+    setPage(0);
+  };
+
+  const handleFilterChange = (newFilters: AssetFilters) => {
+    setFilters(newFilters);
+    setPage(0);
   };
 
   const handleCreateAsset = () => {
@@ -145,7 +141,7 @@ export default function Dashboard() {
             Gerenciamento de Ativos
           </Typography>
           <Typography variant="body1" className={styles.subtitle}>
-            Total de ativos: {filteredAssets.length} {filters.search || filters.category !== 'ALL' || filters.status !== 'ALL' ? `de ${assets.length}` : ''}
+            Total de ativos: {pagedAssets.totalElements}
           </Typography>
         </div>
         <div className={styles.headerActions}>
@@ -163,14 +159,29 @@ export default function Dashboard() {
 
       <AssetFiltersComponent
         filters={filters}
-        onFilterChange={setFilters}
+        onFilterChange={handleFilterChange}
         onClearFilters={handleClearFilters}
       />
 
       <AssetTable
-        assets={filteredAssets}
+        assets={assets}
         onEdit={handleEditAsset}
         onDelete={handleDeleteAsset}
+      />
+
+      <TablePagination
+        component="div"
+        count={pagedAssets.totalElements}
+        page={page}
+        onPageChange={(_, newPage) => setPage(newPage)}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={(e) => {
+          setRowsPerPage(parseInt(e.target.value, 10));
+          setPage(0);
+        }}
+        rowsPerPageOptions={[5, 10, 25, 50]}
+        labelRowsPerPage="Itens por página:"
+        labelDisplayedRows={({ from, to, count }) => `${from}–${to} de ${count}`}
       />
 
       <AssetForm
