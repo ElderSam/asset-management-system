@@ -51,13 +51,6 @@ describe('CATEGORY_OPTIONS', () => {
     expect(CATEGORY_OPTIONS).toHaveLength(6);
   });
 
-  it('cada opção tem value e label', () => {
-    CATEGORY_OPTIONS.forEach(({ value, label }) => {
-      expect(value).toBeTruthy();
-      expect(label).toBeTruthy();
-    });
-  });
-
   it('label é consistente com getCategoryLabel', () => {
     CATEGORY_OPTIONS.forEach(({ value, label }) => {
       expect(getCategoryLabel(value)).toBe(label);
@@ -73,6 +66,12 @@ describe('STATUS_OPTIONS', () => {
   it('label é consistente com getStatusLabel', () => {
     STATUS_OPTIONS.forEach(({ value, label }) => {
       expect(getStatusLabel(value)).toBe(label);
+    });
+  });
+
+  it('color é consistente com getStatusColor', () => {
+    STATUS_OPTIONS.forEach(({ value }) => {
+      expect(['success', 'info', 'warning', 'error']).toContain(getStatusColor(value));
     });
   });
 });

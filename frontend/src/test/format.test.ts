@@ -24,12 +24,12 @@ describe('formatDate', () => {
     expect(formatDate('2024-01-15')).toBe('15/01/2024');
   });
 
-  it('formata data de fim de ano', () => {
-    expect(formatDate('2023-12-31')).toBe('31/12/2023');
-  });
-
   it('não aplica offset de fuso horário', () => {
     // Parsing manual garante que '2024-03-01' seja sempre 01/03/2024
     expect(formatDate('2024-03-01')).toBe('01/03/2024');
+  });
+
+  it('formata data em ano bissexto', () => {
+    expect(formatDate('2024-02-29')).toBe('29/02/2024');
   });
 });
