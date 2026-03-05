@@ -1,14 +1,15 @@
-import { useState, useDeferredValue } from 'react';
+import { useState } from 'react';
 import { useSuspenseQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Box, Typography, Button, Snackbar, Alert, TablePagination } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import type { Asset, AssetFilters, AssetFormData } from '../types/asset';
+import type { Asset, AssetFormData } from '../types/asset';
 import AssetFiltersComponent from '../components/AssetFilters';
 import AssetTable from '../components/AssetTable';
 import AssetForm from '../components/AssetForm';
 import ConfirmDialog from '../components/ConfirmDialog';
 import * as assetService from '../services/assetService';
 import { ApiError } from '../services/assetService';
+import { useAssetFilters } from '../hooks/useAssetFilters';
 import styles from './Dashboard.module.css';
 
 export default function Dashboard() {
@@ -58,16 +59,16 @@ export default function Dashboard() {
 
   const isMutating = createMutation.isPending || updateMutation.isPending || deleteMutation.isPending;
 
-  const [filters, setFilters] = useState<AssetFilters>({
-    search: '',
-    category: 'ALL',
-    status: 'ALL',
-  });
-
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const deferredSearch = useDeferredValue(filters.search);
+  const {
+    filters,
+    page,
+    rowsPerPage,
+    deferredSearch,
+    handleFilterChange,
+    handleClearFilters,
+    handlePageChange,
+    handleRowsPerPageChange,
+  } = useAssetFilters();
 
   const { data: pagedAssets } = useSuspenseQuery({
     queryKey: ['assets', { page, size: rowsPerPage, search: deferredSearch, category: filters.category, status: filters.status }],
@@ -97,16 +98,6 @@ export default function Dashboard() {
     message: '',
     severity: 'success',
   });
-
-  const handleClearFilters = () => {
-    setFilters({ search: '', category: 'ALL', status: 'ALL' });
-    setPage(0);
-  };
-
-  const handleFilterChange = (newFilters: AssetFilters) => {
-    setFilters(newFilters);
-    setPage(0);
-  };
 
   const handleCreateAsset = () => {
     setEditingAsset(undefined);
@@ -142,15 +133,6 @@ export default function Dashboard() {
   const handleCancelDelete = () => {
     setDeleteDialogOpen(false);
     setAssetToDelete(null);
-  };
-
-  const handlePageChange = (_: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleRowsPerPageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(e.target.value, 10));
-    setPage(0);
   };
 
   const handleFormClose = () => setIsFormOpen(false);
