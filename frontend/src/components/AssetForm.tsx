@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import type { Asset, AssetFormData } from '../types/asset';
 import { AssetCategory, AssetStatus } from '../types/asset';
+import { CATEGORY_OPTIONS, STATUS_OPTIONS } from '../utils/assetUtils';
 
 type AssetFormValues = Omit<AssetFormData, 'category'> & { category: AssetCategory | '' };
 
@@ -187,12 +188,9 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
                     <MenuItem value="" disabled>
                       Selecione uma categoria
                     </MenuItem>
-                    <MenuItem value={AssetCategory.COMPUTER}>Computador</MenuItem>
-                    <MenuItem value={AssetCategory.MONITOR}>Monitor</MenuItem>
-                    <MenuItem value={AssetCategory.PERIPHERAL}>Periférico</MenuItem>
-                    <MenuItem value={AssetCategory.NETWORK}>Rede</MenuItem>
-                    <MenuItem value={AssetCategory.FURNITURE}>Móvel</MenuItem>
-                    <MenuItem value={AssetCategory.OTHER}>Outro</MenuItem>
+                    {CATEGORY_OPTIONS.map(({ value, label }) => (
+                      <MenuItem key={value} value={value}>{label}</MenuItem>
+                    ))}
                   </TextField>
                 )}
               />
@@ -210,10 +208,9 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
                     error={!!errors.status}
                     helperText={errors.status?.message}
                   >
-                    <MenuItem value={AssetStatus.ACTIVE}>Em uso</MenuItem>
-                    <MenuItem value={AssetStatus.INACTIVE}>Armazenado</MenuItem>
-                    <MenuItem value={AssetStatus.MAINTENANCE}>Em manutenção</MenuItem>
-                    <MenuItem value={AssetStatus.DISPOSED}>Descartado</MenuItem>
+                    {STATUS_OPTIONS.map(({ value, label }) => (
+                      <MenuItem key={value} value={value}>{label}</MenuItem>
+                    ))}
                   </TextField>
                 )}
               />

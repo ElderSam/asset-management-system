@@ -9,7 +9,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import type { AssetCategory, AssetStatus, AssetFilters as Filters } from '../types/asset';
-import { AssetCategory as AssetCategoryEnum, AssetStatus as AssetStatusEnum } from '../types/asset';
+import { CATEGORY_OPTIONS, STATUS_OPTIONS } from '../utils/assetUtils';
 
 interface AssetFiltersProps {
   filters: Filters;
@@ -70,12 +70,9 @@ export default function AssetFilters({
             onChange={handleCategoryChange}
           >
             <MenuItem value="ALL">Todas</MenuItem>
-            <MenuItem value={AssetCategoryEnum.COMPUTER}>Computador</MenuItem>
-            <MenuItem value={AssetCategoryEnum.MONITOR}>Monitor</MenuItem>
-            <MenuItem value={AssetCategoryEnum.PERIPHERAL}>Periférico</MenuItem>
-            <MenuItem value={AssetCategoryEnum.NETWORK}>Rede</MenuItem>
-            <MenuItem value={AssetCategoryEnum.FURNITURE}>Móvel</MenuItem>
-            <MenuItem value={AssetCategoryEnum.OTHER}>Outro</MenuItem>
+            {CATEGORY_OPTIONS.map(({ value, label }) => (
+              <MenuItem key={value} value={value}>{label}</MenuItem>
+            ))}
           </TextField>
         </Box>
         <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 25%' } }}>
@@ -87,10 +84,9 @@ export default function AssetFilters({
             onChange={handleStatusChange}
           >
             <MenuItem value="ALL">Todos</MenuItem>
-            <MenuItem value={AssetStatusEnum.ACTIVE}>Em uso (ativo)</MenuItem>
-            <MenuItem value={AssetStatusEnum.INACTIVE}>Armazenado (inativo)</MenuItem>
-            <MenuItem value={AssetStatusEnum.MAINTENANCE}>Em manutenção</MenuItem>
-            <MenuItem value={AssetStatusEnum.DISPOSED}>Descartado</MenuItem>
+            {STATUS_OPTIONS.map(({ value, label }) => (
+              <MenuItem key={value} value={value}>{label}</MenuItem>
+            ))}
           </TextField>
         </Box>
         <Box sx={{ flex: { xs: '1 1 100%', md: '0 0 auto' } }}>

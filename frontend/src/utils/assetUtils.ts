@@ -32,3 +32,19 @@ export const getCategoryLabel = (category: AssetCategory): string => {
     default:                           return category;
   }
 };
+
+export const CATEGORY_OPTIONS: Array<{ value: AssetCategory; label: string }> = [
+  { value: AssetCategoryEnum.COMPUTER,   label: 'Computador' },
+  { value: AssetCategoryEnum.MONITOR,    label: 'Monitor' },
+  { value: AssetCategoryEnum.PERIPHERAL, label: 'Periférico' },
+  { value: AssetCategoryEnum.NETWORK,    label: 'Rede' },
+  { value: AssetCategoryEnum.FURNITURE,  label: 'Móvel' },
+  { value: AssetCategoryEnum.OTHER,      label: 'Outro' },
+];
+
+export const STATUS_OPTIONS: Array<{ value: AssetStatus; label: string }> = [
+  { value: AssetStatusEnum.ACTIVE,      label: 'Em uso' },
+  { value: AssetStatusEnum.INACTIVE,    label: 'Armazenado' },
+  { value: AssetStatusEnum.MAINTENANCE, label: 'Em manutenção' },
+  { value: AssetStatusEnum.DISPOSED,    label: 'Descartado' },
+];
