@@ -8,6 +8,7 @@ import AssetTable from '../components/AssetTable';
 import AssetForm from '../components/AssetForm';
 import ConfirmDialog from '../components/ConfirmDialog';
 import * as assetService from '../services/assetService';
+import { ApiError } from '../services/assetService';
 import styles from './Dashboard.module.css';
 
 export default function Dashboard() {
@@ -21,7 +22,12 @@ export default function Dashboard() {
       setIsFormOpen(false);
       setEditingAsset(undefined);
     },
-    onError: () => setSnackbar({ open: true, message: 'Erro ao criar ativo', severity: 'error' }),
+    onError: (error) => {
+      const message = error instanceof ApiError && error.status === 409
+        ? 'Número de série já cadastrado.'
+        : 'Erro ao criar ativo.';
+      setSnackbar({ open: true, message, severity: 'error' });
+    },
   });
 
   const updateMutation = useMutation({
@@ -33,7 +39,12 @@ export default function Dashboard() {
       setIsFormOpen(false);
       setEditingAsset(undefined);
     },
-    onError: () => setSnackbar({ open: true, message: 'Erro ao atualizar ativo', severity: 'error' }),
+    onError: (error) => {
+      const message = error instanceof ApiError && error.status === 409
+        ? 'Número de série já cadastrado.'
+        : 'Erro ao atualizar ativo.';
+      setSnackbar({ open: true, message, severity: 'error' });
+    },
   });
 
   const deleteMutation = useMutation({

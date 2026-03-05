@@ -3,7 +3,7 @@ import type { Asset, AssetFormData, Page } from '../types/asset';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 const ASSETS_ENDPOINT = `${API_URL}/api/assets`;
 
-class ApiError extends Error {
+export class ApiError extends Error {
   status: number;
   
   constructor(status: number, message: string) {
