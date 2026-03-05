@@ -9,11 +9,13 @@ import {
   MenuItem,
   Stack,
 } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import type { Asset, AssetFormData } from '../types/asset';
 import { AssetCategory, AssetStatus } from '../types/asset';
+
+type AssetFormValues = Omit<AssetFormData, 'category'> & { category: AssetCategory | '' };
 
 interface AssetFormProps {
   open: boolean;
@@ -82,12 +84,12 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<AssetFormData>({
-    resolver: zodResolver(assetSchema),
+  } = useForm<AssetFormValues>({
+    resolver: zodResolver(assetSchema) as Resolver<AssetFormValues>,
     defaultValues: {
       name: '',
       serialNumber: '',
-      category: '' as any, 
+      category: '',
       status: AssetStatus.ACTIVE,
       purchaseDate: new Date().toISOString().split('T')[0],
       purchaseValue: 0,
@@ -113,7 +115,7 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
         reset({
           name: '',
           serialNumber: '',
-          category: '' as any, 
+          category: '',
           status: AssetStatus.ACTIVE,
           purchaseDate: new Date().toISOString().split('T')[0],
           purchaseValue: 0,
@@ -124,8 +126,8 @@ export default function AssetForm({ open, onClose, onSubmit, asset }: AssetFormP
     }
   }, [open, asset, reset]);
 
-  const handleFormSubmit = (data: AssetFormData) => {
-    onSubmit(data);
+  const handleFormSubmit = (data: AssetFormValues) => {
+    onSubmit(data as AssetFormData);
   };
 
   const handleClose = () => {
