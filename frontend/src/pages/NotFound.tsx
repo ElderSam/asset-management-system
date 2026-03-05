@@ -1,14 +1,9 @@
 import { Box, Typography, Button, Container } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { useNavigate } from '@tanstack/react-router';
 
-/**
- * Página 404 - Não Encontrada
- * (Aguardando configuração do React Router na FASE 2)
- */
 export default function NotFound() {
-  const handleGoHome = () => {
-    window.location.href = '/';
-  };
+  const navigate = useNavigate();
 
   return (
     <Container maxWidth="md">
@@ -36,7 +31,7 @@ export default function NotFound() {
         <Button
           variant="contained"
           size="large"
-          onClick={handleGoHome}
+          onClick={() => navigate({ to: '/' })}
         >
           Voltar para o Dashboard
         </Button>
